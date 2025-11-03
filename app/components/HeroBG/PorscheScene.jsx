@@ -22,73 +22,77 @@ export default function PorscheScene({
   const [degraded, degrade] = useState(false);
 
   return (
-    <div className="relative w-full h-[92%] overflow-hidden" {...props}>
-      {/* 3D Canvas */}
-      <Canvas shadows camera={{ position: [15, 0, 15], fov: 30 }}>
-        <spotLight
-          position={[0, 15, 0]}
-          angle={0.3}
-          penumbra={1}
-          castShadow
-          intensity={2}
-          shadow-bias={-0.0001}
-        />
-        <ambientLight intensity={0.5} />
-
-        {/* This is position of the car */}
-        <PorscheModel
-          url={modelPath}
-          scale={1.6}
-          position={[1.5, -0.18, 0]}
-          rotation={[0, Math.PI / 5, 0]}
-        />
-
-        <AccumulativeShadows
-          position={[0, -1.16, 0]}
-          frames={100}
-          alphaTest={0.9}
-          scale={10}
-        >
-          <RandomizedLight
-            amount={8}
-            radius={10}
-            ambient={0.5}
-            position={[1, 5, -1]}
+    <div className="relative w-full h-screen overflow-hidden" {...props}>
+      <div className="h-[92%]">
+        {/* 3D Canvas */}
+        <Canvas shadows camera={{ position: [15, 0, 15], fov: 30 }}>
+          <spotLight
+            position={[0, 15, 0]}
+            angle={0.3}
+            penumbra={1}
+            castShadow
+            intensity={2}
+            shadow-bias={-0.0001}
           />
-        </AccumulativeShadows>
+          <ambientLight intensity={0.5} />
 
-        <PerformanceMonitor onDecline={() => degrade(true)} />
+          {/* This is position of the car */}
+          <PorscheModel
+            url={modelPath}
+            scale={1.6}
+            position={[1.5, -0.18, 0]}
+            rotation={[0, Math.PI / 5, 0]}
+          />
 
-        <Environment
-          frames={degraded ? 1 : Infinity}
-          resolution={256}
-          background
-          blur={1}
-        >
-          <Lightformers />
-        </Environment>
+          <AccumulativeShadows
+            position={[0, -1.16, 0]}
+            frames={100}
+            alphaTest={0.9}
+            scale={10}
+          >
+            <RandomizedLight
+              amount={8}
+              radius={10}
+              ambient={0.5}
+              position={[1, 5, -1]}
+            />
+          </AccumulativeShadows>
 
-        <CameraRig />
-      </Canvas>
+          <PerformanceMonitor onDecline={() => degrade(true)} />
+
+          <Environment
+            frames={degraded ? 1 : Infinity}
+            resolution={256}
+            background
+            blur={1}
+          >
+            <Lightformers />
+          </Environment>
+
+          <CameraRig />
+        </Canvas>
+      </div>
 
       {/* Gradient overlay for better text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent pointer-events-none"></div>
+      <div className="max-h-[92%] absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent pointer-events-none"></div>
 
       {/* Hero Text Section */}
       <div className="absolute left-13 top-1/2 -translate-y-1/2 text-white max-w-xl space-y-14">
         <div>
           <h1 className="text-6xl font-extrabold leading-tight drop-shadow-md font-mono">
-          Drive the Legend
-          <br />
-          <span className="text-yellow-400 font-mono">Porsche 911 Carrera</span>
-        </h1>
+            Drive the Legend
+            <br />
+            <span className="text-yellow-400 font-mono">
+              Porsche 911 Carrera
+            </span>
+          </h1>
         </div>
         <div>
-           <p className="text-lg text-gray-200 max-w-md leading-relaxed font-mono">
-          Experience the ultimate in speed, luxury, and precision — rent your dream car today.
-        </p>
+          <p className="text-lg text-gray-200 max-w-md leading-relaxed font-mono">
+            Experience the ultimate in speed, luxury, and precision — rent your
+            dream car today.
+          </p>
         </div>
-       
 
         <div className="flex gap-4">
           <Button
@@ -106,12 +110,11 @@ export default function PorscheScene({
             Explore Models
           </Button>
         </div>
+        {/* Footer Credits
+        <p className="flex justify-end text-xs text-gray-400">Porsche 911 Carrera 4S © Gearshift</p> */}
       </div>
 
-      {/* Footer Credits */}
-      <div className="absolute bottom-4 right-6 text-xs text-gray-400">
-        <p>Porsche 911 Carrera 4S © Gearshift</p>
-      </div>
+      
     </div>
   );
 }
