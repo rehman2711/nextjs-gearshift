@@ -1,12 +1,9 @@
 "use client";
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, GithubIcon, MoonIcon, SunIcon } from "lucide-react";
+import { Settings } from "lucide-react";
 import HamburgerMenu from "./HamburgerMenu";
 import { Button } from "@/components/retroui/Button";
-import { Text } from "@/components/retroui/Text";
-
 export default function Navbar() {
   // ✅ Correct structure
   const topNavItems = [
@@ -33,20 +30,22 @@ export default function Navbar() {
       <div className="container max-w-6xl px-4 lg:px-0 mx-auto">
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
-          <div className="shrink-0">
-            <a
+          <div className="">
+           
+            <Link
               href="/"
-              className="text-black font-head text-2xl flex items-end"
+              className="text-black text-2xl flex justify-center items-center space-x-2"
             >
-              <Image
+              {/* <Image
                 src="/logo.png"
                 alt="retro ui logo"
                 className="mr-2"
                 height={30}
                 width={30}
-              />
-              <div className="text-foreground">Gearshift</div>
-            </a>
+              /> */}
+               <Settings />
+              <div className="text-foreground font-mono">Gearshift</div>
+            </Link>
           </div>
 
           {/* Navigation Links */}
@@ -55,7 +54,7 @@ export default function Navbar() {
               <Link
                 key={item.title}
                 href={item.href}
-                className="hover:underline decoration-yellow-400 underline-offset-8 decoration-2 text-[15px] transition-all"
+                className="text-base font-mono hover:underline decoration-yellow-400 underline-offset-8 decoration-2 transition-all duration-1000 focus:decoration-red-400"
               >
                 {item.title}
               </Link>
@@ -79,7 +78,7 @@ export default function Navbar() {
               <Button
                 variant="outline"
                 size="sm"
-                className="bg-yellow-400 border border-3 border-gray-300 rounded-md"
+                className="text-[14px] font-mono px-4 py-2 bg-yellow-400 border border-3 border-gray-300 rounded-md hover:bg-yellow-[#e6c400] transition-all"
               >
                 Rent Now
               </Button>
