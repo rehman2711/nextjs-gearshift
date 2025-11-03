@@ -13,18 +13,18 @@ import {
   useGLTF,
 } from "@react-three/drei";
 import { LayerMaterial, Color, Depth } from "lamina";
+import { Button } from "@/components/ui/button";
 
-/**
- * Reusable Porsche Scene Component
- * Usage:
- * <PorscheScene modelPath="/911-transformed.glb" />
- */
-export default function PorscheScene({ modelPath = "/911-transformed.glb", ...props }) {
+export default function PorscheScene({
+  modelPath = "/911-transformed.glb",
+  ...props
+}) {
   const [degraded, degrade] = useState(false);
 
   return (
-    <div className="relative w-full h-[92%]" {...props}>
-      <Canvas shadows camera={{ position: [5, 0, 15], fov: 30 }}>
+    <div className="relative w-full h-[92%] overflow-hidden" {...props}>
+      {/* 3D Canvas */}
+      <Canvas shadows camera={{ position: [15, 0, 15], fov: 30 }}>
         <spotLight
           position={[0, 15, 0]}
           angle={0.3}
@@ -35,29 +35,80 @@ export default function PorscheScene({ modelPath = "/911-transformed.glb", ...pr
         />
         <ambientLight intensity={0.5} />
 
+        {/* This is position of the car */}
         <PorscheModel
           url={modelPath}
           scale={1.6}
-          position={[-0.5, -0.18, 0]}
+          position={[1.5, -0.18, 0]}
           rotation={[0, Math.PI / 5, 0]}
         />
 
-        <AccumulativeShadows position={[0, -1.16, 0]} frames={100} alphaTest={0.9} scale={10}>
-          <RandomizedLight amount={8} radius={10} ambient={0.5} position={[1, 5, -1]} />
+        <AccumulativeShadows
+          position={[0, -1.16, 0]}
+          frames={100}
+          alphaTest={0.9}
+          scale={10}
+        >
+          <RandomizedLight
+            amount={8}
+            radius={10}
+            ambient={0.5}
+            position={[1, 5, -1]}
+          />
         </AccumulativeShadows>
 
-        {/* Performance Monitor for automatic degradation */}
         <PerformanceMonitor onDecline={() => degrade(true)} />
 
-        {/* Dynamic HDRI environment */}
-        <Environment frames={degraded ? 1 : Infinity} resolution={256} background blur={1}>
+        <Environment
+          frames={degraded ? 1 : Infinity}
+          resolution={256}
+          background
+          blur={1}
+        >
           <Lightformers />
         </Environment>
 
         <CameraRig />
       </Canvas>
 
-      {/* Optional overlay elements */}
+      {/* Gradient overlay for better text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent pointer-events-none"></div>
+
+      {/* Hero Text Section */}
+      <div className="absolute left-13 top-1/2 -translate-y-1/2 text-white max-w-xl space-y-14">
+        <div>
+          <h1 className="text-6xl font-extrabold leading-tight drop-shadow-md font-mono">
+          Drive the Legend
+          <br />
+          <span className="text-yellow-400 font-mono">Porsche 911 Carrera</span>
+        </h1>
+        </div>
+        <div>
+           <p className="text-lg text-gray-200 max-w-md leading-relaxed font-mono">
+          Experience the ultimate in speed, luxury, and precision — rent your dream car today.
+        </p>
+        </div>
+       
+
+        <div className="flex gap-4">
+          <Button
+            variant="solid"
+            size="sm"
+            className="text-base text-black font-mono bg-yellow-400 border border-3 border-slate-50 rounded-md hover:bg-yellow-[#e6c400] transition-all"
+          >
+            Book Now
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-base text-white font-mono bg-black/30 border border-3 border-slate-50 rounded-md hover:bg-yellow-[#e6c400] transition-all"
+          >
+            Explore Models
+          </Button>
+        </div>
+      </div>
+
+      {/* Footer Credits */}
       <div className="absolute bottom-4 right-6 text-xs text-gray-400">
         <p>Porsche 911 Carrera 4S © Gearshift</p>
       </div>
@@ -132,7 +183,6 @@ function Lightformers({ positions = [2, 0, 2, 0, 2, 0, 2, 0] }) {
 
   return (
     <>
-      {/* Ceiling light */}
       <Lightformer
         intensity={0.75}
         rotation-x={Math.PI / 2}
@@ -154,7 +204,6 @@ function Lightformers({ positions = [2, 0, 2, 0, 2, 0, 2, 0] }) {
         </group>
       </group>
 
-      {/* Sides */}
       <Lightformer
         intensity={4}
         rotation-y={Math.PI / 2}
@@ -172,7 +221,6 @@ function Lightformers({ positions = [2, 0, 2, 0, 2, 0, 2, 0] }) {
         scale={[20, 1, 1]}
       />
 
-      {/* Accent ring */}
       <Float speed={5} floatIntensity={2} rotationIntensity={2}>
         <Lightformer
           form="ring"
@@ -184,7 +232,6 @@ function Lightformers({ positions = [2, 0, 2, 0, 2, 0, 2, 0] }) {
         />
       </Float>
 
-      {/* Background */}
       <mesh scale={100}>
         <sphereGeometry args={[1, 64, 64]} />
         <LayerMaterial side={THREE.BackSide}>
