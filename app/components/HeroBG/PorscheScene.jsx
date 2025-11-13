@@ -14,12 +14,15 @@ import {
 } from "@react-three/drei";
 import { LayerMaterial, Color, Depth } from "lamina";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function PorscheScene({
   modelPath = "/911-transformed.glb",
   ...props
 }) {
   const [degraded, degrade] = useState(false);
+
+  const router = useRouter();
 
   return (
     <div className="relative w-full h-screen overflow-hidden" {...props}>
@@ -106,6 +109,7 @@ export default function PorscheScene({
             variant="outline"
             size="sm"
             className="text-base text-white font-mono bg-black/30 border border-3 border-white rounded-md hover:bg-yellow-[#e6c400] hover:text-yellow-400 hover:border-yellow-400 transition-all"
+            onClick={() => {router.push("/models");}}
           >
             Explore Models
           </Button>
@@ -113,8 +117,6 @@ export default function PorscheScene({
         {/* Footer Credits
         <p className="flex justify-end text-xs text-gray-400">Porsche 911 Carrera 4S © Gearshift</p> */}
       </div>
-
-      
     </div>
   );
 }
