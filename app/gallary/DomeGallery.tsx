@@ -124,8 +124,8 @@ export default function DomeGallery({
   enlargeTransitionMs = DEFAULTS.enlargeTransitionMs,
   segments = DEFAULTS.segments,
   dragDampening = 2,
-  openedImageWidth = "500px",
-  openedImageHeight = "00px",
+  openedImageWidth = "400px",
+  openedImageHeight = "400px",
   imageBorderRadius = "30px",
   openedImageBorderRadius = "30px",
   grayscale = true,
@@ -387,6 +387,8 @@ export default function DomeGallery({
           if (pointerTypeRef.current === "touch") unlockScroll();
           if (movedRef.current) lastDragEndAt.current = performance.now();
           movedRef.current = false;
+           grayscale = false;
+         
         }
       },
     },
