@@ -133,10 +133,11 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                       className="bg-yellow-400 hover:bg-yellow-500"
                       onClick={(e) => {
                         e.stopPropagation();
-                        alert("Compare clicked");
+                        // alert("Compare clicked");
+                        router.push(`models/availability/${car.id}`);
                       }}
                     >
-                      Book Now
+                     Check Availability
                     </Button>
                   </div>
                 </motion.div>
