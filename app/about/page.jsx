@@ -1,4 +1,5 @@
 import Container from "@/app/components/Container";
+import BentoGrid from "@/app/components/BentoGrid";
 
 const About = () => {
   const numarr = [
@@ -154,7 +155,17 @@ const About = () => {
           ))}
         </div>
 
-        <div className="py-10"></div>
+        <div className="my-20">
+  <div className="text-center mb-10">
+    <h1 className="text-3xl font-bold">Why Choose Us</h1>
+    <p className="text-gray-600 mt-2 max-w-xl mx-auto">
+      We strive to provide exceptional service with unmatched dedication,
+      quality, and customer satisfaction.
+    </p>
+  </div>
+
+  <BentoGrid className="max-w-6xl mx-auto" />
+</div>
       </div>
     </Container>
     </>

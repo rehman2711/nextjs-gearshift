@@ -123,8 +123,8 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                       className="bg-green-500 hover:bg-green-600"
                       onClick={(e) => {
                         e.stopPropagation();
-                        alert(car.id)
-                        // router.push(`/models/${car.id}`);
+                        // alert(car.id)
+                        router.push(`/models/${car.id}`);
                       }}
                     >
                       View Details

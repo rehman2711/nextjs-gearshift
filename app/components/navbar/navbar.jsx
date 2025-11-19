@@ -30,7 +30,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 right-0 z-10 w-full border-b bg-background">
+    <nav className="sticky top-0 right-0 z-10 w-full border-b bg-background z-100">
       <div className="container mx-auto max-w-6xl px-4 lg:px-0">
         <div className="flex h-16 items-center justify-between">
           {/* Logo Section */}
