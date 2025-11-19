@@ -182,14 +182,14 @@ export default function CheckAvailability() {
         <div className="text-center mt-10">
           {carData.cStatus === "Available" ? (
             <Button
-              onClick={() => router.push(`/rentitnow/${carData.id}`)}
+              onClick={() => router.push(`/models/availability/${carData.id}/rent_now`)}
               className="bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
             >
               Rent Now
             </Button>
           ) : (
             <Button
-              onClick={() => router.push(`/notifyme`)}
+              onClick={() => router.push(`/models/availability/${carData.id}/notify_me`)}
               className="bg-gray-700 text-white hover:bg-gray-800 transition"
             >
               Notify Me
