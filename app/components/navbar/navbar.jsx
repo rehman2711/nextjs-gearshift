@@ -62,8 +62,7 @@ export default function Navbar() {
 
           {/* Desktop Login Button */}
           <div className="hidden lg:flex items-center space-x-3">
-            <ResponsiveDialog>
-              <ResponsiveDialogTrigger asChild>
+            
                 <Button
                   variant="outline"
                   size="sm"
@@ -71,98 +70,7 @@ export default function Navbar() {
                 >
                   Login
                 </Button>
-              </ResponsiveDialogTrigger>
-
-              <ResponsiveDialogContent className="sm:max-w-sm">
-                <div className="p-6 space-y-5 overflow-y-auto">
-                  <div className="flex flex-col items-center gap-2">
-                    <div
-                      className="flex size-11 items-center justify-center rounded-full border"
-                      aria-hidden="true"
-                    >
-                      <svg
-                        className="stroke-zinc-800 dark:stroke-zinc-100"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 32 32"
-                        aria-hidden="true"
-                      >
-                        <circle
-                          cx="16"
-                          cy="16"
-                          r="12"
-                          fill="none"
-                          strokeWidth="8"
-                        />
-                      </svg>
-                    </div>
-                    <ResponsiveDialogHeader className="sm:text-center">
-                      <ResponsiveDialogTitle>
-                        Welcome back
-                      </ResponsiveDialogTitle>
-                      <ResponsiveDialogDescription>
-                        Enter your credentials to login to your account.
-                      </ResponsiveDialogDescription>
-                    </ResponsiveDialogHeader>
-                  </div>
-
-                  {/* Login Form */}
-                  <form className="space-y-5">
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor={`${id}-email`}>Email</Label>
-                        <Input
-                          required
-                          type="email"
-                          id={`${id}-email`}
-                          placeholder="hi@yourcompany.com"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor={`${id}-password`}>Password</Label>
-                        <Input
-                          required
-                          type="password"
-                          id={`${id}-password`}
-                          placeholder="Enter your password"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <Checkbox id={`${id}-remember`} />
-                        <Label
-                          htmlFor={`${id}-remember`}
-                          className="font-normal text-muted-foreground"
-                        >
-                          Remember me
-                        </Label>
-                      </div>
-                      <a
-                        className="text-sm underline hover:no-underline"
-                        href="#"
-                      >
-                        Forgot password?
-                      </a>
-                    </div>
-
-                    <Button type="submit" className="w-full">
-                      Sign in
-                    </Button>
-                  </form>
-
-                  <div className="flex items-center gap-3 before:flex-1 before:h-px before:bg-border after:flex-1 after:h-px after:bg-border">
-                    <span className="text-xs text-muted-foreground">Or</span>
-                  </div>
-
-                  <Button variant="outline" className="w-full">
-                    Login with Google
-                  </Button>
-                </div>
-              </ResponsiveDialogContent>
-            </ResponsiveDialog>
+             
           </div>
         </div>
       </div>
