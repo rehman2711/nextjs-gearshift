@@ -2,24 +2,15 @@
 
 import Link from "next/link";
 import { Settings } from "lucide-react";
-import { useId } from "react";
-
 import HamburgerMenu from "./HamburgerMenu";
 import { Button } from "@/components/retroui/Button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  ResponsiveDialog,
-  ResponsiveDialogContent,
-  ResponsiveDialogDescription,
-  ResponsiveDialogHeader,
-  ResponsiveDialogTitle,
-  ResponsiveDialogTrigger,
-} from "@/components/ui/revola";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const id = useId();
+  const router = useRouter();
+  const path = usePathname();
+
+  console.log("Current path:", path);
 
   const topNavItems = [
     { title: "Models", href: "/models" },
@@ -62,15 +53,31 @@ export default function Navbar() {
 
           {/* Desktop Login Button */}
           <div className="hidden lg:flex items-center space-x-3">
-            
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="font-mono text-sm px-4 py-2 bg-yellow-400 border border-gray-300 rounded-md hover:bg-yellow-300 transition-all"
-                >
-                  Login
-                </Button>
-             
+            {path !== "/login" && path !== "/login/admin" &&  path !== "/login/admin/dashboard" && path !== "/login/admin/form" && path !== "/login/admin/manage_data" && path !== "/login/admin/view_bookings" && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-mono text-sm px-4 py-2 bg-yellow-400 border border-gray-300 rounded-md hover:bg-yellow-300 transition-all"
+                onClick={() => {
+                  router.push("/login");
+                }}
+              >
+                Login
+              </Button>
+            )}
+            {path === "/login/admin" && (
+              <div className="hidden lg:flex items-center space-x-3">
+                {
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-sm px-4 py-2 bg-green-400 border border-gray-300 rounded-md hover:bg-green-500 transition-all"
+                  >
+                    You Logged in as admin
+                  </Button>
+                }
+              </div>
+            )}
           </div>
         </div>
       </div>
