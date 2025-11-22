@@ -19,14 +19,9 @@ interface Greeting {
 }
 
 const greetings: Greeting[] = [
-  { text: "Why", language: "English" },
-  { text: "own", language: "English" },
-  { text: "it ?", language: "English" },
-  { text: "Just", language: "English" },
-  { text: "Rent", language: "English" },
-  { text: "It", language: "English" },
-  { text: "And", language: "English" },
-  { text: "Flex", language: "English" },
+  { text: "WELCOME", language: "English" },
+  { text: "TO", language: "English" },
+  { text: "GEARSHIFT", language: "English" },
 ];
 
 const DynamicText = () => {
@@ -48,7 +43,7 @@ const DynamicText = () => {
 
         return nextIndex;
       });
-    }, 300);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [isAnimating]);
@@ -70,7 +65,7 @@ const DynamicText = () => {
           <AnimatePresence mode="popLayout">
             <motion.div
               key={currentIndex}
-              className="absolute flex items-center gap-2 text-4xl font-bold text-gray-800 dark:text-gray-200"
+              className="absolute flex items-center gap-2 text-7xl font-bold text-gray-800 dark:text-gray-200"
               aria-live="off"
               initial={textVariants.hidden}
               animate={textVariants.visible}
@@ -82,7 +77,7 @@ const DynamicText = () => {
             </motion.div>
           </AnimatePresence>
         ) : (
-          <div className="flex items-center gap-2 text-4xl font-bold text-gray-800 dark:text-gray-200">
+          <div className="flex items-center gap-2 text-7xl font-bold text-gray-800 dark:text-gray-200">
             <div aria-hidden="true" />
             {greetings[currentIndex].text}
           </div>

@@ -12,18 +12,18 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
 
-    const timer = setTimeout(() => setShowDynamic(false), 3000);
+    const timer = setTimeout(() => setShowDynamic(false), 4000);
     return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) return null; // ⛔ Block PorscheScene during SSR/early hydration
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-r from-black/80 via-black/30 to-transparent">
+    <div className="relative w-full h-screen bg-gradient-to-r from-[#ffd6ff] via-{#ffd6ff}/30 to-transparent">
 
       {/* DynamicText first */}
       <div
-        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ${
+        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
           showDynamic ? "opacity-100 z-20" : "opacity-0 z-0"
         }`}
       >
