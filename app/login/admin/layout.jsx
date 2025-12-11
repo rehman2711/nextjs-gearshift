@@ -10,6 +10,7 @@ import {
   FileEdit,
   Database,
   ClipboardList,
+  Check,
   LogOut,
 } from "lucide-react";
 
@@ -73,6 +74,12 @@ export default function AdminLayout({ children }) {
             label="View Bookings"
             open={open}
             icon={<ClipboardList size={20} />}
+          />
+           <SidebarLink
+            href="/login/admin/completed_bookings"
+            label="View Completed Bookings"
+            open={open}
+            icon={<Check size={20} />}
           />
         </nav>
 

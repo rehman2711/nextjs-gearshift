@@ -23,7 +23,6 @@ const DetailCars = () => {
         const result = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/single-car/${id}`
         );
-        // console.log(result.data[0]);
         setCarData(result.data[0]);
         setSelectedImg(result.data.cImg);
       } catch (error) {
@@ -39,36 +38,32 @@ const DetailCars = () => {
 
   if (!carData?.carName)
     return (
-      <div className="text-center text-white text-2xl mt-40">
-        ❌ Car not found
+      <div className="text-center text-gray-700 text-2xl mt-40">
+        Car not found
       </div>
     );
 
   return (
     <>
-      {/* Background */}
+      {/* Light Background */}
       <div
-        className="fixed inset-0 z-0 min-h-screen"
-        style={{
-          background:
-            "radial-gradient(140% 140% at 50% 0%, #000 30%, #091a33 100%)",
-        }}
+        className="fixed inset-0 z-0 min-h-screen bg-gradient-to-b from-white to-gray-100"
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 pt-14 pb-14">
         {/* Back button */}
         <Button
           onClick={() => router.back()}
-          className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition mb-6 border border-white/20"
+          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition mb-6 border border-gray-300"
         >
-          ⬅ Back
+          ← Back
         </Button>
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* LEFT — Image Gallery */}
           <div>
-            <div className="rounded-3xl overflow-hidden shadow-2xl bg-black/40 p-3 backdrop-blur-xl border border-white/10">
+            <div className="rounded-3xl overflow-hidden shadow-xl bg-white p-3 border border-gray-200">
               <img
                 src={
                   selectedImg ||
@@ -96,12 +91,12 @@ const DetailCars = () => {
                         process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src
                       )
                     }
-                    className={`p-1 rounded-xl bg-white/10 backdrop-blur-md border transition 
+                    className={`p-1 rounded-xl bg-white border transition shadow-sm
                       ${
                         selectedImg ===
                         process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src
-                          ? "border-yellow-400"
-                          : "border-transparent hover:border-white/30"
+                          ? "border-blue-500 shadow"
+                          : "border-gray-200 hover:border-gray-400"
                       }`}
                   >
                     <img
@@ -113,19 +108,19 @@ const DetailCars = () => {
             </div>
 
             {/* Rent Card */}
-            <div className="mt-10 bg-white/10 text-white p-8 rounded-3xl backdrop-blur-xl shadow-xl border border-white/10">
+            <div className="mt-10 bg-white text-gray-800 p-8 rounded-3xl shadow-xl border border-gray-200">
               {/* Price */}
               <div className="flex items-end gap-2">
-                <span className="text-xl opacity-80">
+                <span className="text-xl text-gray-500">
                   {carData.carCurrency}
                 </span>
-                <span className="text-5xl font-bold drop-shadow">
+                <span className="text-5xl font-bold text-gray-900">
                   {carData.carRent}
                 </span>
-                <span className="text-xl opacity-80">/ {carData.cDay}</span>
+                <span className="text-xl text-gray-500">/ {carData.cDay}</span>
               </div>
 
-              <hr className="my-6 border-white/20" />
+              <hr className="my-6 border-gray-200" />
 
               <h2 className="text-2xl font-semibold">Interested in Renting?</h2>
 
@@ -150,19 +145,19 @@ const DetailCars = () => {
                         `/models/availability/${carData.id}/notify_me`
                       )
                     }
-                    className="bg-gray-700 text-white hover:bg-gray-800 transition"
+                    className="bg-gray-300 text-gray-800 hover:bg-gray-400 transition"
                   >
-                    Notify Me - Cause-Not-Available
+                    Notify Me – Not Available
                   </Button>
                 )}
               </div>
 
-              <hr className="my-6 border-white/20" />
+              <hr className="my-6 border-gray-200" />
 
               {/* Contact */}
               <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
 
-              <div className="space-y-3 text-white/90">
+              <div className="space-y-3 text-gray-700">
                 <ContactItem text="rehman@gearshift.com" />
                 <ContactItem text="+91 12345 12345" />
               </div>
@@ -171,7 +166,7 @@ const DetailCars = () => {
 
           {/* RIGHT — Car Details */}
           <div>
-            <h1 className="text-white text-5xl font-bold leading-tight drop-shadow">
+            <h1 className="text-gray-900 text-5xl font-bold leading-tight">
               {carData.cName}
             </h1>
 
@@ -186,7 +181,7 @@ const DetailCars = () => {
             </div>
 
             {/* Description */}
-            <p className="mt-8 text-white/80 leading-relaxed text-lg">
+            <p className="mt-8 text-gray-600 leading-relaxed text-lg">
               {carData.cText}
             </p>
 
@@ -224,36 +219,38 @@ const DetailCars = () => {
 };
 
 /* -------------------------------------------------- */
-/* SUB COMPONENTS — Redesigned */
+/* SUB COMPONENTS — Light Theme */
 /* -------------------------------------------------- */
 
 const SectionHeader = ({ title }) => (
-  <h2 className="text-3xl font-semibold text-white mt-10 mb-3">{title}</h2>
+  <h2 className="text-3xl font-semibold text-gray-900 mt-10 mb-3">
+    {title}
+  </h2>
 );
 
 const InfoTag = ({ icon, label }) => (
-  <div className="px-3 py-2 bg-white/10 backdrop-blur-md rounded-xl flex items-center gap-2 text-white text-sm border border-white/10">
+  <div className="px-3 py-2 bg-gray-100 rounded-xl flex items-center gap-2 text-gray-700 text-sm border border-gray-300 shadow-sm">
     <span>{icon}</span>
     <span>{label}</span>
   </div>
 );
 
 const Spec = ({ label, value }) => (
-  <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl flex justify-between text-white shadow border border-white/10">
-    <span className="opacity-80">{label}</span>
-    <span className="font-medium">{value}</span>
+  <div className="bg-white px-4 py-2 rounded-xl flex justify-between text-gray-800 shadow border border-gray-200">
+    <span className="text-gray-500">{label}</span>
+    <span className="font-medium text-gray-900">{value}</span>
   </div>
 );
 
 const FeatureItem = ({ text }) => (
-  <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-xl text-white hover:bg-white/10 transition border border-white/5">
-    <span className="text-lg">✔</span>
+  <div className="flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-xl text-gray-800 hover:bg-gray-200 transition border border-gray-300">
+    <span className="text-green-600 text-lg">✔</span>
     <span>{text}</span>
   </div>
 );
 
 const ContactItem = ({ text }) => (
-  <div className="flex items-center gap-3">
+  <div className="flex items-center gap-3 text-gray-700">
     <span>📩</span>
     <span>{text}</span>
   </div>
@@ -262,14 +259,8 @@ const ContactItem = ({ text }) => (
 /* ---------------- SKELETON ---------------- */
 
 const SkeletonUI = () => (
-  <div
-    className="animate-pulse w-full min-h-screen pt-32 px-10"
-    style={{
-      background:
-        "radial-gradient(140% 140% at 50% 0%, #000 30%, #091a33 100%)",
-    }}
-  >
-    <div className="max-w-7xl mx-auto bg-white/10 h-[450px] rounded-xl"></div>
+  <div className="animate-pulse w-full min-h-screen pt-32 px-10 bg-gray-100">
+    <div className="max-w-7xl mx-auto bg-gray-300 h-[450px] rounded-xl"></div>
   </div>
 );
 

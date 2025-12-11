@@ -18,10 +18,10 @@ export default function RentTheCarNow() {
     customerGender: "",
     customerAddress: "",
     customerPAN: "",
-    customerChoosenCar: "",   // Will store carId
+    customerChoosenCar: "",
     customerChoosenCarFrom: "",
     customerChoosenCarTo: "",
-    customerImage: null,      // Will store file object
+    customerImage: null,
   });
 
   // Fetch car by ID
@@ -37,10 +37,9 @@ export default function RentTheCarNow() {
         const car = res.data[0];
         setSelectedCar(car);
 
-        // store selected car ID into customer object
         setCustomer((prev) => ({
           ...prev,
-          customerChoosenCar: car?.id || "",
+          customerChoosenCar: car?.carName || "",
         }));
       } catch (err) {
         console.error("Error fetching car:", err);
@@ -50,7 +49,6 @@ export default function RentTheCarNow() {
     fetchCar();
   }, [params]);
 
-  // Input change handler for text, email, mobile, date, etc.
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -60,7 +58,6 @@ export default function RentTheCarNow() {
     }));
   };
 
-  // File upload handler
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
     setCustomer((prev) => ({
@@ -69,7 +66,6 @@ export default function RentTheCarNow() {
     }));
   };
 
-  // Submit API with file upload support
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -79,15 +75,11 @@ export default function RentTheCarNow() {
         formData.append(key, customer[key]);
       }
 
-      await axios.post(
-        `http://localhost:4407/api/v1/book-car`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/book-car`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       router.push("/");
     } catch (err) {
@@ -96,15 +88,15 @@ export default function RentTheCarNow() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white py-12 px-4">
+    <div className="min-h-screen w-full bg-gradient-to-b from-white to-gray-100 text-gray-900 py-12 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
 
         {/* FORM */}
         <form
           onSubmit={handleSubmit}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 p-8 rounded-2xl shadow-xl"
+          className="bg-white border border-gray-200 p-8 rounded-2xl shadow-lg"
         >
-          <h2 className="text-3xl font-bold text-center mb-6 text-yellow-400">
+          <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
             Provide Documents
           </h2>
 
@@ -116,7 +108,7 @@ export default function RentTheCarNow() {
             onChange={handleChange}
             required
             placeholder="Enter Your Name"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
           />
 
           {/* Mobile */}
@@ -128,7 +120,7 @@ export default function RentTheCarNow() {
             required
             type="tel"
             placeholder="Enter Your Number"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
           />
 
           {/* Email */}
@@ -140,7 +132,7 @@ export default function RentTheCarNow() {
             required
             type="email"
             placeholder="Enter Your Email"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
           />
 
           {/* Gender */}
@@ -150,9 +142,9 @@ export default function RentTheCarNow() {
             value={customer.customerGender}
             onChange={handleChange}
             required
-            className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
           >
-            <option value="">Select</option>
+            <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
@@ -165,7 +157,7 @@ export default function RentTheCarNow() {
             onChange={handleChange}
             required
             placeholder="Enter Your Address"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -178,7 +170,7 @@ export default function RentTheCarNow() {
                 onChange={handleChange}
                 placeholder="ABCDE1234F"
                 pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
-                className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
               />
             </div>
 
@@ -188,7 +180,7 @@ export default function RentTheCarNow() {
               <input
                 value={selectedCar?.carName || ""}
                 readOnly
-                className="w-full mt-1 mb-4 px-3 py-2 bg-black/10 border border-white/10 rounded-lg text-gray-200"
+                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg"
               />
             </div>
           </div>
@@ -202,7 +194,7 @@ export default function RentTheCarNow() {
                 name="customerChoosenCarFrom"
                 value={customer.customerChoosenCarFrom}
                 onChange={handleChange}
-                className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
               />
             </div>
 
@@ -213,7 +205,7 @@ export default function RentTheCarNow() {
                 name="customerChoosenCarTo"
                 value={customer.customerChoosenCarTo}
                 onChange={handleChange}
-                className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
               />
             </div>
           </div>
@@ -225,23 +217,23 @@ export default function RentTheCarNow() {
               type="file"
               name="customerImage"
               onChange={handleFileChange}
-              className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg"
+              className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
             />
           </div>
 
           <Button
             type="submit"
-            className="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 rounded-lg"
+            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg"
           >
             Submit Form
           </Button>
         </form>
 
         {/* CAR PREVIEW */}
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center px-4">
           <h3 className="text-2xl font-semibold mb-4">
-            YOU CHOOSEN
-            <span className="ml-2 text-yellow-400">
+            YOU CHOSE
+            <span className="ml-2 text-blue-600">
               {selectedCar?.carName || "—"}
             </span>
           </h3>
@@ -249,10 +241,10 @@ export default function RentTheCarNow() {
           {selectedCar?.carImageMain ? (
             <img
               src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
-              className="w-full max-w-md rounded-2xl shadow-2xl border border-white/10"
+              className="w-full max-w-md rounded-2xl shadow-lg border border-gray-200"
             />
           ) : (
-            <div className="w-full max-w-md h-56 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-gray-400">
+            <div className="w-full max-w-md h-56 bg-gray-100 border border-gray-300 rounded-2xl flex items-center justify-center text-gray-500">
               Loading image...
             </div>
           )}

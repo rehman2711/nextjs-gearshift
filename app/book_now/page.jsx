@@ -220,7 +220,7 @@ const RentNow = () => {
           >
             <option value="">Select Car</option>
             {cars.map((car) => (
-              <option key={car.id} value={car.id}>
+              <option key={car.id} value={car.carName}>
                 {car.carName}
               </option>
             ))}

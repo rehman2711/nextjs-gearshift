@@ -12,7 +12,7 @@ const ViewBookings = () => {
 
   const fetchCustomer = async () => {
     const result = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/book_car`
+      `${process.env.NEXT_PUBLIC_API_URL}/bookings_completed`
     );
     setViewCustomerBookings(result.data);
     console.log(result.data);
@@ -22,24 +22,14 @@ const ViewBookings = () => {
     fetchCustomer();
   }, []);
 
-  const bookingCompleted = async (booking_completed_id) => {
-    try {
-      const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/delete-booking/${booking_completed_id}`
-      );
 
-      console.log(response)
-    } catch (error) {
-      console.log("Error While making booking completed");
-    }
-  };
 
   return (
     <>
       {/* Header */}
       <div className="p-2 bg-yellow-400 flex justify-between items-center rounded-xl shadow-lg mx-10">
         <h1 className="text-white text-3xl font-bold tracking-wide mx-auto">
-          ALL UPCOMING BOOKINGS
+          ALL COMPLETED BOOKINGS
         </h1>
         <div>
           <Button
@@ -120,14 +110,6 @@ const ViewBookings = () => {
               </div>
             </div>
             <div className="flex justify-center">
-              <Button
-                className="mt-4 text-center"
-                onClick={() => {
-                  bookingCompleted(val.id);
-                }}
-              >
-                Booking Completed
-              </Button>
             </div>
           </div>
         ))}
