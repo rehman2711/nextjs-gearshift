@@ -23,7 +23,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-neutral-950 text-white flex flex-col">
+    <div className="min-h-screen w-full bg-white text-white flex flex-col">
       <div className="container mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between py-20 gap-20">
         {/* RIGHT SIDE IMAGE */}
         <div className="flex-1 hidden lg:flex justify-end">
@@ -111,12 +111,6 @@ export default function LoginPage() {
             </button>
           </p>
         </div>
-      </div>
-
-      {/* FOOTER */}
-      <div className="w-full py-6 px-6 border-t border-neutral-800 text-neutral-500 text-sm flex items-center justify-between">
-        <div className="font-semibold text-white">CarHub</div>
-        <div className="opacity-70">Premium UI — Inspired by Mobbin</div>
       </div>
     </div>
   );

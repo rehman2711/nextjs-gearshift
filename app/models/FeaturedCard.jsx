@@ -13,7 +13,12 @@ export default function FeaturedBellows({ allCarsData = [] }) {
   const router = useRouter();
 
   return (
-    <div className="fixed bottom-0 left-0 w-full h-[100vh] flex justify-end items-end bg-gradient-to-r from-[#ffd6ff] via-{#ffd6ff}/30 to-transparent backdrop-blur-lg overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent ">
+    <div
+      className="fixed bottom-0 left-0 w-full h-[100vh] flex justify-end items-end  overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent z-10"
+      style={{
+        backgroundImage: `radial-gradient(circle 500px at 50% 300px, rgba(16,185,129,0.35), transparent)`,
+      }}
+    >
       {allCarsData.map((car) => {
         const isOpen = openId === car.id;
 
@@ -28,10 +33,20 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                 ? "w-[54%] h-[50vh] bg-white/90"
                 : "w-[5rem] h-[50vh] bg-white/40 hover:bg-white/60"
             }`}
+            style={{
+              backgroundImage: `
+                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+                radial-gradient(circle at 20px 20px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
+                radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
+                radial-gradient(circle 500px at 50% 300px, rgba(16,185,129,0.35), transparent)
+              `,
+              backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
+            }}
           >
             {/* Collapsed Vertical Tab (Left Side) */}
             {!isOpen && (
-              <div className="absolute inset-0 flex justify-center items-center bg-white/40 border border-gray-200/40 hover:bg-white/70 transition-all duration-500 rounded-2xl">
+              <div className="absolute inset-0 flex justify-center items-center bg-[rgba(16,185,129,0.09)] border border-2 border-gray-600/40 hover:bg-[rgba(16,185,129,0.25)]/90 transition-all duration-500 rounded-2xl">
                 <p className="text-gray-800 font-extrabold text-3xl rotate-90 whitespace-nowrap tracking-[4]">
                   {car.carName}
                 </p>
@@ -43,11 +58,21 @@ export default function FeaturedBellows({ allCarsData = [] }) {
               {isOpen && (
                 <motion.div
                   key="expanded"
-                  initial={{ opacity: 0, x: 1000 }} // 👈 start from right
-                  animate={{ opacity: 1, x: 0 }} // 👈 slide into place
-                  exit={{ opacity: 0, x: -1000 }} // 👈 slide out to left
+                  initial={{ opacity: 0, x: 1000 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -1000 }} 
                   transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className="absolute inset-0 flex flex-col items-center justify-center p-8 space-y-8 bg-gradient-to-t from-purple-300/50 to-white/70 rounded-2xl"
+                  className="absolute inset-0 flex flex-col items-center justify-center p-8 space-y-8 rounded-b-3xl rounded-t-none border border-4 border-green-900/40"
+                  style={{
+                    backgroundImage: `
+                      repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+                      repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+                      radial-gradient(circle at 20px 20px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
+                      radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
+                      radial-gradient(circle 500px at 50% 300px, rgba(16,185,129,0.35), transparent)
+                    `,
+                    backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
+                  }}
                 >
                   {/* Top: Name + Image */}
                   <div className="w-full flex flex-col items-center justify-center text-center space-y-4">

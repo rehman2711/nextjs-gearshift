@@ -99,7 +99,7 @@ export default function PorscheScene({
           <Button
             variant="solid"
             size="sm"
-            className="text-base text-black  bg-yellow-400 border border-3 border-slate-50 rounded-md hover:bg-yellow-[#e6c400] transition-all"
+            className="text-base text-gray-800 bg-green-400 border border-3 border-slate-50 rounded-md hover:bg-green-400/90 transition-all"
             onClick={() => {
               router.push("/book_now");
             }}
@@ -109,7 +109,7 @@ export default function PorscheScene({
           <Button
             variant="outline"
             size="sm"
-            className="text-base text-white  bg-black/30 border border-3 border-white rounded-md hover:bg-yellow-[#e6c400] hover:text-yellow-400 hover:border-yellow-400 transition-all"
+            className="text-base text-white  bg-black/30 border border-3 border-white rounded-md hover:bg-yellow-[#e6c400] hover:text-green-400 hover:border-green-400 transition-all"
             onClick={() => {
               router.push("/models");
             }}

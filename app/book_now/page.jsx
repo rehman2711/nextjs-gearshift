@@ -23,7 +23,9 @@ const RentNow = () => {
   });
 
   const fetchCars = async () => {
-    const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/all-cars`);
+    const result = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/all-cars`
+    );
     setCars(result.data);
   };
 
@@ -85,9 +87,8 @@ const RentNow = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-[#ffd6ff] via-[#ffd6ff]/30 to-transparent backdrop-blur-lg py-10 px-4">
+    <div className="min-h-screen w-full  py-10 px-4">
       <div className="max-w-6xl mx-auto">
-
         <form
           onSubmit={handleSubmit}
           className="bg-white/60 backdrop-blur-xl border border-white/20 p-10 rounded-3xl shadow-2xl space-y-10"
@@ -100,9 +101,10 @@ const RentNow = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* LEFT SIDE - PERSONAL DETAILS */}
             <div className="space-y-6">
-
               <div className="p-5 bg-white/70 rounded-xl shadow-lg space-y-4">
-                <h3 className="text-xl font-semibold text-black mb-2">Personal Details</h3>
+                <h3 className="text-xl font-semibold text-black mb-2">
+                  Personal Details
+                </h3>
 
                 <div>
                   <Label>Customer Name</Label>
@@ -175,20 +177,29 @@ const RentNow = () => {
 
                 <div>
                   <Label>Upload Photo</Label>
-                  <Input type="file" name="customerImage" onChange={handleFileChange} />
+                  <Input
+                    type="file"
+                    name="customerImage"
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
             </div>
 
             {/* RIGHT SIDE — CAR PREVIEW (SCROLLABLE) */}
             <div className="p-5 bg-white/70 rounded-xl shadow-lg">
-              <h3 className="text-xl font-semibold text-black mb-4">Car Preview</h3>
+              <h3 className="text-xl font-semibold text-black mb-4">
+                Car Preview
+              </h3>
 
               <div className="h-[420px] overflow-y-auto rounded-xl border p-4 bg-white shadow-inner">
                 {selectedCar ? (
                   <>
                     <h4 className="text-lg font-semibold mb-2">
-                      Selected: <span className="text-yellow-500">{selectedCar.carName}</span>
+                      Selected:{" "}
+                      <span className="text-yellow-500">
+                        {selectedCar.carName}
+                      </span>
                     </h4>
 
                     <img
@@ -196,10 +207,6 @@ const RentNow = () => {
                       className="w-full rounded-xl shadow-lg mb-4"
                       alt="Car"
                     />
-
-                    <p className="text-sm text-gray-700">
-                      More details can be auto-filled here...
-                    </p>
                   </>
                 ) : (
                   <div className="text-center mt-10 opacity-50 text-black text-lg">
@@ -212,7 +219,9 @@ const RentNow = () => {
 
           {/* ========================= SECTION 2: Car Selection ========================= */}
           <div className="p-6 bg-white/70 rounded-xl shadow-lg space-y-4">
-            <h3 className="text-xl font-semibold text-black">Car Booking Details</h3>
+            <h3 className="text-xl font-semibold text-black">
+              Car Booking Details
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>

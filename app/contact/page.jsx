@@ -16,22 +16,20 @@ import { Textarea } from "../../components/ui/textarea";
 const Contact = () => {
   return (
     <>
-    <div className="bg-gradient-to-r from-[#ffd6ff] via-{#ffd6ff}/30 to-transparent backdrop-blur-lg pt-8">
+    <div className="pt-8">
       <Container>
-        <div className="h-screen w-full">
+        <div className="h-screen w-full mx-auto max-w-5xl">
           <div className="container mx-auto my-10 py-10 px-4">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
               {/* Left Section */}
-              <div className="md:col-span-5">
-                <div className="my-5">
+              <div className="md:col-span-6 bg-white rounded-3xl shadow-lg p-6">
                   <h2 className="font-semibold text-2xl">Get In Touch</h2>
                   <p className="text-base pr-10 mt-3 font-medium text-gray-700">
                     Have questions or feedback? Contact us — we are here to
                     help!
                   </p>
-                </div>
 
-                <div className="my-20 space-y-10">
+                <div className="flex flex-col gap-10 mt-10">
                   {/* Email */}
                   <div className="flex items-center gap-4">
                     <div className="bg-yellow-400 p-2 rounded-lg">
@@ -57,7 +55,7 @@ const Contact = () => {
               </div>
 
               {/* Right Section — Form */}
-              <div className="md:col-span-7">
+              <div className="md:col-span-6">
                 <form className="rounded-3xl shadow-lg bg-white">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-8">
                     {/* First Name */}

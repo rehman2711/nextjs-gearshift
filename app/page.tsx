@@ -34,7 +34,7 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-r from-[#ffd6ff] via-[#ffd6ff]/30 to-transparent">
+    <div className="relative w-full h-screen ">
 
       <Toaster position="bottom-right" />
 

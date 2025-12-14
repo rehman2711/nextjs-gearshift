@@ -21,7 +21,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 right-0 z-10 w-full border-b bg-background z-100">
+    <nav className="sticky top-0 right-0 z-10 w-full border-b bg-white/80 z-100">
       <div className="container mx-auto max-w-6xl px-4 lg:px-0">
         <div className="flex h-16 items-center justify-between">
           {/* Logo Section */}
@@ -39,7 +39,7 @@ export default function Navbar() {
               <Link
                 key={item.title}
                 href={item.href}
-                className="text-base  hover:underline decoration-yellow-400 underline-offset-8 decoration-2 transition-all duration-300 focus:decoration-red-400"
+                className="text-base  hover:underline decoration-green-500 underline-offset-8 decoration-2 transition-all duration-300"
               >
                 {item.title}
               </Link>
@@ -62,7 +62,7 @@ export default function Navbar() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className=" text-sm px-4 py-2 bg-yellow-400 border border-gray-300 rounded-md hover:bg-yellow-300 transition-all"
+                  className=" text-sm px-4 py-2 bg-green-400/80 border border-gray-300 rounded-md hover:bg-green-400/70 transition-all"
                   onClick={() => {
                     router.push("/login");
                   }}
