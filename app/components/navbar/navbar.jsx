@@ -11,16 +11,11 @@ export default function Navbar() {
   const path = usePathname();
 
   /* ---------------- ADMIN ROUTES ---------------- */
-  const adminRoutes = [
-    "/login/admin",
-    "/login/admin/dashboard",
-    "/login/admin/form",
-    "/login/admin/manage_data",
-    "/login/admin/view_bookings",
-    "/login/admin/completed_bookings",
-  ];
+  const adminBase = "/login/admin";
+  const blockedRoutes = ["/login/admin/login"];
 
-  const isAdminRoute = adminRoutes.includes(path);
+  const isAdminRoute =
+    path.startsWith(adminBase) && !blockedRoutes.includes(path);
 
   /* ---------------- NAV ITEMS ---------------- */
   const topNavItems = [

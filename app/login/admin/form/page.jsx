@@ -116,11 +116,26 @@ const FormCar = () => {
   return (
     <div className="max-w-7xl mx-auto min-h-screen">
       {/* HEADER */}
-      <div className="flex items-center justify-between bg-yellow-400 rounded-xl shadow-lg px-6 py-4">
-        <h1 className="text-white text-3xl font-bold tracking-wide">
+      <div
+        className="flex items-center justify-between rounded-xl shadow-lg border-t px-6 py-4"
+        style={{
+          backgroundImage: `
+        repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px),
+        radial-gradient(circle 500px at 50% 100px, rgba(245, 237, 14, 0.4), transparent)
+      `,
+        }}
+      >
+        <h1 className="text-black text-3xl font-bold tracking-wide mx-auto">
           CAR INFORMATION FORM
         </h1>
-        <Button variant="secondary" onClick={() => router.back()}>
+        <Button
+          variant="secondary"
+          onClick={() => router.back()}
+          className="bg-yellow-400/50 hover:bg-yellow-500/50"
+        >
           Back
         </Button>
       </div>
@@ -228,7 +243,7 @@ const FormCar = () => {
                 ["Rent Amount", "carRent"],
               ].map(([label, name]) => (
                 <div key={name}>
-                  <Label>{label}</Label>
+                  <Label className="mb-2 ms-1">{label}</Label>
                   <Input
                     name={name}
                     placeholder={label}
@@ -241,10 +256,11 @@ const FormCar = () => {
               ))}
 
               <div>
+                <Label className="mb-2 ms-1">Select Currency</Label>
                 <select
                   name="carCurrency"
                   onChange={updateValue}
-                  className="border rounded-lg p-3 w-full"
+                  className="border rounded-lg p-2 text-sm w-full rounded-md"
                 >
                   <option value="">Select Currency</option>
                   <option value="RUPEES">RUPEES</option>
@@ -282,12 +298,13 @@ const FormCar = () => {
             {/* Two-column grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
-                "carImageMain",
-                "carImageSub1",
-                "carImageSub2",
-                "carImageSub3",
-              ].map((name) => (
+                ["Main Image", "carImageMain"],
+                ["Sub Image 1", "carImageSub1"],
+                ["Sub Image 2", "carImageSub2"],
+                ["Sub Image 3", "carImageSub3"],
+              ].map(([label, name]) => (
                 <div key={name} className="space-y-2">
+                  <Label className="mb-2 ms-1">{label}</Label>
                   <Input
                     type="file"
                     name={name}

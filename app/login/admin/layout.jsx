@@ -123,7 +123,7 @@ export default function AdminLayout({ children }) {
         className={`
           px-6 py-8
           transition-all duration-300
-          ${open ? "ml-60" : "ml-20"}
+          ${open ? "ml-63 me-4" : "ml-20"}
         `}
       >
         {children}

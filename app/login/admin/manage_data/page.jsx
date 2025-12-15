@@ -41,11 +41,26 @@ const AdminShowAll = () => {
   return (
     <>
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between bg-yellow-400 rounded-xl shadow-lg px-6 py-4">
-          <h1 className="text-white text-3xl font-bold tracking-wide">
+        <div
+          className="flex items-center justify-between rounded-xl shadow-lg px-6 py-4"
+          style={{
+            backgroundImage: `
+        repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px),
+        radial-gradient(circle 500px at 50% 100px, rgba(245, 237, 14, 0.4), transparent)
+      `,
+          }}
+        >
+          <h1 className="text-black mx-auto text-3xl font-bold tracking-wide">
             All Rental Cars
           </h1>
-          <Button variant="secondary" onClick={() => router.back()}>
+          <Button
+            variant="secondary"
+            onClick={() => router.back()}
+            className="bg-yellow-400/50 hover:bg-yellow-500/50"
+          >
             Back
           </Button>
         </div>
@@ -119,15 +134,14 @@ const AdminShowAll = () => {
 
                 {/* ACTION BUTTONS */}
                 <div className="flex justify-between mt-5">
-                  <Link
-                    href={`/login/admin/manage_data/car_edit/${val.id}`}
-                    className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700"
-                  >
-                    Edit
-                  </Link>
+                  <Button className="bg-green-600 text-white hover:bg-green-700">
+                    <Link href={`/login/admin/manage_data/car_edit/${val.id}`}>
+                      Edit
+                    </Link>
+                  </Button>
 
                   <Button
-                    className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
+                    className="bg-red-600 hover:bg-red-700"
                     onClick={() => DeleteCar(val.id)}
                   >
                     Delete

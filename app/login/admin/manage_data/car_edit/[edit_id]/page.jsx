@@ -144,17 +144,35 @@ const AdminCarEdit = () => {
   };
 
   return (
-    <div className="min-h-screen py-10 px-4">
+    <div className="max-w-7xl mx-auto">
       {/* HEADER */}
-      <div className="max-w-6xl mx-auto bg-yellow-500 rounded-2xl shadow-lg p-4 text-center">
-        <h1 className="text-white text-3xl font-extrabold">
+      <div
+        className="flex items-center justify-between rounded-xl shadow-lg px-6 py-4"
+        style={{
+          backgroundImage: `
+        repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px),
+        radial-gradient(circle 500px at 50% 100px, rgba(245, 237, 14, 0.4), transparent)
+      `,
+        }}
+      >
+        <h1 className="text-black mx-auto text-3xl font-bold tracking-wide">
           EDIT CAR INFORMATION
         </h1>
+        <Button
+          variant="secondary"
+          onClick={() => router.back()}
+          className="bg-yellow-400/50 hover:bg-yellow-500/50"
+        >
+          Back
+        </Button>
       </div>
 
       <form
         onSubmit={updateInformation}
-        className="max-w-6xl mx-auto mt-10 bg-white/70 backdrop-blur-xl border rounded-3xl shadow-2xl p-10 space-y-10"
+        className="max-w-7xl mx-auto mt-10 bg-white/70 backdrop-blur-xl border rounded-3xl shadow-2xl p-10 space-y-10"
       >
         {/* ================= STEP 1 ================= */}
         {step === 1 && (
@@ -170,6 +188,7 @@ const AdminCarEdit = () => {
                 ["carManufactureYear", "Manufacture Year"],
               ].map(([name, label]) => (
                 <div key={name}>
+                  <Label className="mb-2 ms-1">{label}</Label>
                   <Input
                     name={name}
                     value={carInfo[name]}
@@ -183,11 +202,12 @@ const AdminCarEdit = () => {
               ))}
 
               <div>
+                <Label className="mb-2 ms-1">Car Status</Label>
                 <select
                   name="carStatus"
                   value={carInfo.carStatus}
                   onChange={updateValue}
-                  className="border rounded-lg p-3 w-full"
+                  className="border rounded-lg p-2 text-sm w-full"
                 >
                   <option value="">Select Status</option>
                   <option value="true">Available</option>
@@ -199,6 +219,7 @@ const AdminCarEdit = () => {
               </div>
 
               <div>
+                <Label className="mb-2 ms-1">Car Available Date</Label>
                 <Input
                   type="date"
                   name="carAvailableDate"
@@ -229,15 +250,13 @@ const AdminCarEdit = () => {
             </div>
             <div className="flex justify-end">
               <Button
-              type="button"
-              onClick={() => validateStep1() && setStep(2)}
-              className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
-            >
-              Continue
-            </Button>
+                type="button"
+                onClick={() => validateStep1() && setStep(2)}
+                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+              >
+                Continue
+              </Button>
             </div>
-
-            
           </section>
         )}
 
@@ -256,6 +275,7 @@ const AdminCarEdit = () => {
                 ["carRent", "Rent Amount"],
               ].map(([name, label]) => (
                 <div key={name}>
+                  <Label className="mb-2 ms-1">{label}</Label>
                   <Input
                     name={name}
                     value={carInfo[name]}
@@ -269,11 +289,12 @@ const AdminCarEdit = () => {
               ))}
 
               <div>
+                <Label className="mb-2 ms-1">Select Currency</Label>
                 <select
                   name="carCurrency"
                   value={carInfo.carCurrency}
                   onChange={updateValue}
-                  className="border rounded-lg p-3 w-full"
+                  className="border rounded-lg p-2 text-sm w-full"
                 >
                   <option value="">Select Currency</option>
                   <option value="RUPEES">RUPEES</option>
@@ -309,12 +330,13 @@ const AdminCarEdit = () => {
             {/* Two-column grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
-                "carImageMain",
-                "carImageSub1",
-                "carImageSub2",
-                "carImageSub3",
-              ].map((name) => (
+                ["Main Image", "carImageMain"],
+                ["Sub Image 1", "carImageSub1"],
+                ["Sub Image 2", "carImageSub2"],
+                ["Sub Image 3", "carImageSub3"],
+              ].map(([label, name]) => (
                 <div key={name} className="space-y-2">
+                  <Label className="mb-2 ms-1">{label}</Label>
                   <Input type="file" name={name} onChange={updateValue} />
 
                   {preview[name] && (
@@ -337,7 +359,10 @@ const AdminCarEdit = () => {
               <Button variant="outline" onClick={() => setStep(2)}>
                 Back
               </Button>
-              <Button type="submit" className="bg-yellow-300/80 text-black hover:bg-yellow-300/70">
+              <Button
+                type="submit"
+                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+              >
                 Save Changes
               </Button>
             </div>

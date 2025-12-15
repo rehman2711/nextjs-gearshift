@@ -10,11 +10,26 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-7xl mx-auto space-y-10">
       {/* PAGE TITLE */}
-      <div className="flex items-center justify-between bg-yellow-400 rounded-xl shadow-lg px-6 py-4">
-        <h1 className="text-white text-3xl font-bold tracking-wide">
+      <div
+        className="flex items-center justify-between rounded-xl shadow-lg px-6 py-4"
+        style={{
+          backgroundImage: `
+        repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75, 85, 99, 0.06) 2px, rgba(75, 85, 99, 0.06) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(67.5deg, transparent, transparent 2px, rgba(107, 114, 128, 0.05) 2px, rgba(107, 114, 128, 0.05) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(112.5deg, transparent, transparent 2px, rgba(55, 65, 81, 0.04) 2px, rgba(55, 65, 81, 0.04) 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(157.5deg, transparent, transparent 2px, rgba(31, 41, 55, 0.03) 2px, rgba(31, 41, 55, 0.03) 3px, transparent 3px, transparent 8px),
+        radial-gradient(circle 500px at 50% 100px, rgba(245, 237, 14, 0.4), transparent)
+      `,
+        }}
+      >
+        <h1 className="text-black mx-auto text-3xl font-bold tracking-wide">
           Dashboard
         </h1>
-        <Button variant="secondary" onClick={() => router.back()}>
+        <Button
+          variant="secondary"
+          onClick={() => router.back()}
+          className="bg-yellow-400/50 hover:bg-yellow-500/50"
+        >
           Back
         </Button>
       </div>
