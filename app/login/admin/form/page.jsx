@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Container from "@/app/components/Container";
 
 const FormCar = () => {
   const router = useRouter();
+
+  const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState({});
+  const [preview, setPreview] = useState({});
 
   const [carInfo, setCarInfo] = useState({
     carName: "",
@@ -33,6 +36,7 @@ const FormCar = () => {
     carAvailableDate: "",
   });
 
+  /* ---------------- HANDLER ---------------- */
   const updateValue = (e) => {
     const { name, value, files } = e.target;
     setCarInfo((prev) => ({
@@ -41,10 +45,60 @@ const FormCar = () => {
     }));
   };
 
+  /* ---------------- VALIDATION ---------------- */
+  const validateStep1 = () => {
+    const err = {};
+    [
+      "carName",
+      "carBrandName",
+      "carModelName",
+      "carSlogan",
+      "carManufactureYear",
+      "carStatus",
+      "carAvailableDate",
+      "carDescription",
+    ].forEach((field) => {
+      if (!carInfo[field]) err[field] = "Required";
+    });
+
+    setErrors(err);
+    return Object.keys(err).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const err = {};
+    [
+      "carCurrency",
+      "carRent",
+      "carMileage",
+      "carFuelType",
+      "carGearSystem",
+      "carSeatingCapacity",
+      "carStorageCapacity",
+    ].forEach((field) => {
+      if (!carInfo[field]) err[field] = "Required";
+    });
+
+    setErrors(err);
+    return Object.keys(err).length === 0;
+  };
+
+  const validateStep3 = () => {
+    const err = {};
+    ["carImageMain", "carImageSub1", "carImageSub2", "carImageSub3"].forEach(
+      (field) => {
+        if (!carInfo[field]) err[field] = "Required";
+      }
+    );
+
+    setErrors(err);
+    return Object.keys(err).length === 0;
+  };
+
+  /* ---------------- SUBMIT ---------------- */
   const submitForm = async (e) => {
     e.preventDefault();
-
-    console.log("FormData in " + carInfo);
+    if (!validateStep3()) return;
 
     const formData = new FormData();
     Object.entries(carInfo).forEach(([key, val]) => formData.append(key, val));
@@ -52,182 +106,238 @@ const FormCar = () => {
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/insert-car`,
       formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
+      { headers: { "Content-Type": "multipart/form-data" } }
     );
 
     router.push("/login/admin/manage_data");
   };
 
+  /* ---------------- UI ---------------- */
   return (
-    <Container>
-      <form onSubmit={submitForm}>
-        <div className="p-2 bg-yellow-400 flex justify-between items-center rounded-xl shadow-lg">
-          <h1 className="text-white text-3xl font-bold mx-auto">
-            CAR INFORMATION FORM
-          </h1>
-          <Button onClick={() => router.back()}>Back</Button>
-        </div>
+    <div className="max-w-7xl mx-auto min-h-screen">
+      {/* HEADER */}
+      <div className="flex items-center justify-between bg-yellow-400 rounded-xl shadow-lg px-6 py-4">
+        <h1 className="text-white text-3xl font-bold tracking-wide">
+          CAR INFORMATION FORM
+        </h1>
+        <Button variant="secondary" onClick={() => router.back()}>
+          Back
+        </Button>
+      </div>
 
-        <div className="max-w-7xl mx-auto px-6">
-          {/* BASIC DETAILS */}
-          <h2 className="text-xl font-bold my-4">Basic Car Information</h2>
+      <form
+        onSubmit={submitForm}
+        className="max-w-7xl mx-auto mt-10 bg-white/70 backdrop-blur-xl border rounded-3xl shadow-2xl p-10 space-y-10"
+      >
+        {/* ================= STEP 1 ================= */}
+        {step === 1 && (
+          <section className="space-y-6">
+            <h2 className="text-xl font-bold">Basic Car Information</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Input
-              name="carName"
-              placeholder="Car Name"
-              value={carInfo.carName}
-              onChange={updateValue}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                ["Car Name", "carName"],
+                ["Brand", "carBrandName"],
+                ["Model", "carModelName"],
+                ["Slogan", "carSlogan"],
+                ["Manufacture Year", "carManufactureYear"],
+              ].map(([label, name]) => (
+                <div key={name}>
+                  <Label className="mb-2 ms-1">{label}</Label>
+                  <Input
+                    name={name}
+                    placeholder={label}
+                    onChange={updateValue}
+                  />
+                  {errors[name] && (
+                    <p className="text-xs text-red-500 mt-1">{errors[name]}</p>
+                  )}
+                </div>
+              ))}
 
-            <Input
-              name="carBrandName"
-              placeholder="Car Brand"
-              value={carInfo.carBrandName}
-              onChange={updateValue}
-            />
+              <div>
+                <Label className="mb-2 ms-1">Car Status</Label>
+                <select
+                  name="carStatus"
+                  onChange={updateValue}
+                  className="border rounded-lg p-1.5 text-sm w-full"
+                >
+                  <option value="">Select Status</option>
+                  <option value="true">Available</option>
+                  <option value="false">Not Available</option>
+                </select>
+                {errors.carStatus && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.carStatus}
+                  </p>
+                )}
+              </div>
 
-            <Input
-              name="carModelName"
-              placeholder="Car Model"
-              value={carInfo.carModelName}
-              onChange={updateValue}
-            />
+              <div>
+                <Label className="mb-2 ms-1">Car Available Date</Label>
+                <Input
+                  type="date"
+                  name="carAvailableDate"
+                  onChange={updateValue}
+                />
+                {errors.carAvailableDate && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.carAvailableDate}
+                  </p>
+                )}
+              </div>
 
-            <Input
-              name="carSlogan"
-              placeholder="Car Slogan"
-              value={carInfo.carSlogan}
-              onChange={updateValue}
-            />
+              <div className="md:col-span-2">
+                <Label className="mb-2 ms-1">Car Description</Label>
+                <textarea
+                  name="carDescription"
+                  placeholder="Car Description"
+                  onChange={updateValue}
+                  className="border rounded-lg p-3 w-full h-32"
+                />
+                {errors.carDescription && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.carDescription}
+                  </p>
+                )}
+              </div>
+            </div>
 
-            <Input
-              name="carManufactureYear"
-              placeholder="Manufacture Year"
-              value={carInfo.carManufactureYear}
-              onChange={updateValue}
-            />
-
-            <select
-              name="carStatus"
-              value={carInfo.carStatus}
-              onChange={updateValue}
-              className="border rounded p-3"
-            >
-              <option value="none">Select Status</option>
-              <option value="true">Available</option>
-              <option value="false">Not Available</option>
-            </select>
-
-            <Input
-              type="date"
-              name="carAvailableDate"
-              value={carInfo.carAvailableDate}
-              onChange={updateValue}
-              className="border rounded p-3"
-            />
-
-            <textarea
-              name="carDescription"
-              value={carInfo.carDescription}
-              placeholder="Car Description"
-              onChange={updateValue}
-              className="border rounded p-3 w-full md:col-span-3 h-32"
-            />
-          </div>
-
-          {/* PRICING */}
-          <h2 className="text-xl font-bold mt-10 mb-4">Pricing</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <select
-              name="carCurrency"
-              value={carInfo.carCurrency}
-              onChange={updateValue}
-              className="border rounded p-3"
-            >
-              <option value="">Select Currency</option>
-              <option value="RUPEES">RUPEES</option>
-              <option value="USD">USD</option>
-              <option value="AED">AED</option>
-            </select>
-
-            <Input
-              name="carRent"
-              placeholder="Rent Amount"
-              value={carInfo.carRent}
-              onChange={updateValue}
-            />
-          </div>
-
-          {/* FEATURES */}
-          <h2 className="text-xl font-bold mt-10 mb-4">Specifications</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Input
-              name="carMileage"
-              placeholder="Mileage"
-              value={carInfo.carMileage}
-              onChange={updateValue}
-            />
-
-            <Input
-              name="carGearSystem"
-              placeholder="Gear System"
-              value={carInfo.carGearSystem}
-              onChange={updateValue}
-            />
-
-            <Input
-              name="carSeatingCapacity"
-              placeholder="Seating Capacity"
-              value={carInfo.carSeatingCapacity}
-              onChange={updateValue}
-            />
-
-            <Input
-              name="carStorageCapacity"
-              placeholder="Storage Capacity"
-              value={carInfo.carStorageCapacity}
-              onChange={updateValue}
-            />
-
-            <Input
-              name="carFuelType"
-              placeholder="Fuel Type"
-              value={carInfo.carFuelType}
-              onChange={updateValue}
-            />
-          </div>
-
-          {/* IMAGES */}
-          <h2 className="text-xl font-bold mt-10 mb-4">Car Images</h2>
-
-          <Label>Main Image</Label>
-          <Input
-            type="file"
-            name="carImageMain"
-            onChange={updateValue}
-            className="mb-3"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Input type="file" name="carImageSub1" onChange={updateValue} />
-            <Input type="file" name="carImageSub2" onChange={updateValue} />
-            <Input type="file" name="carImageSub3" onChange={updateValue} />
-          </div>
-
-          <div className="text-center my-10">
             <Button
-              type="submit"
-              className="bg-yellow-500 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+              type="button"
+              onClick={() => validateStep1() && setStep(2)}
+              className="w-full bg-yellow-300/80 text-black hover:bg-yellow-300/70"
             >
-              Submit Details
+              Continue
             </Button>
-          </div>
-        </div>
+          </section>
+        )}
+
+        {/* ================= STEP 2 ================= */}
+        {step === 2 && (
+          <section className="space-y-6">
+            <h2 className="text-xl font-bold">Pricing & Specifications</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {[
+                ["Mileage", "carMileage"],
+                ["Gear System", "carGearSystem"],
+                ["Seating Capacity", "carSeatingCapacity"],
+                ["Storage Capacity", "carStorageCapacity"],
+                ["Fuel Type", "carFuelType"],
+                ["Rent Amount", "carRent"],
+              ].map(([label, name]) => (
+                <div key={name}>
+                  <Label>{label}</Label>
+                  <Input
+                    name={name}
+                    placeholder={label}
+                    onChange={updateValue}
+                  />
+                  {errors[name] && (
+                    <p className="text-xs text-red-500 mt-1">{errors[name]}</p>
+                  )}
+                </div>
+              ))}
+
+              <div>
+                <select
+                  name="carCurrency"
+                  onChange={updateValue}
+                  className="border rounded-lg p-3 w-full"
+                >
+                  <option value="">Select Currency</option>
+                  <option value="RUPEES">RUPEES</option>
+                  <option value="USD">USD</option>
+                  <option value="AED">AED</option>
+                </select>
+                {errors.carCurrency && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.carCurrency}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-4">
+              <Button variant="outline" onClick={() => setStep(1)}>
+                Back
+              </Button>
+              <Button
+                type="button"
+                onClick={() => validateStep2() && setStep(3)}
+                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+              >
+                Continue
+              </Button>
+            </div>
+          </section>
+        )}
+
+        {/* ================= STEP 3 ================= */}
+        {step === 3 && (
+          <section className="space-y-6">
+            <h2 className="text-xl font-bold">Car Images</h2>
+
+            {/* Two-column grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                "carImageMain",
+                "carImageSub1",
+                "carImageSub2",
+                "carImageSub3",
+              ].map((name) => (
+                <div key={name} className="space-y-2">
+                  <Input
+                    type="file"
+                    name={name}
+                    accept="image/*"
+                    onChange={(e) => {
+                      updateValue(e);
+
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setPreview((prev) => ({
+                          ...prev,
+                          [name]: URL.createObjectURL(file),
+                        }));
+                      }
+                    }}
+                  />
+
+                  {/* Image Preview */}
+                  {preview?.[name] && (
+                    <img
+                      src={preview[name]}
+                      alt={name}
+                      className="w-full max-w-xs h-40 object-cover rounded-lg border"
+                    />
+                  )}
+
+                  {/* Validation Error */}
+                  {errors[name] && (
+                    <p className="text-xs text-red-500">{errors[name]}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-4 pt-4">
+              <Button variant="outline" onClick={() => setStep(2)}>
+                Back
+              </Button>
+              <Button
+                type="submit"
+                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+              >
+                Submit Details
+              </Button>
+            </div>
+          </section>
+        )}
       </form>
-    </Container>
+    </div>
   );
 };
 

@@ -26,7 +26,7 @@ export default function Home() {
           closeButton: true,
         }
       );
-    }, 9000);
+    }, 8000);
 
     return () => clearTimeout(timer);
   }, []);

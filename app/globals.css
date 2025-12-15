@@ -120,3 +120,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Flicker Animation */
+@keyframes flicker {
+  0%   { opacity: 1; }
+  12%  { opacity: 0.85; }
+  25%  { opacity: 1; }
+  38%  { opacity: 0.65; }
+  50%  { opacity: 1; }
+  65%  { opacity: 0.8; }
+  80%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.animate-flicker {
+  animation: flicker 3.2s infinite ease-in-out;
+}
+

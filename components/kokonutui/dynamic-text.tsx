@@ -86,16 +86,19 @@ const DynamicText = () => {
           </AnimatePresence>
         ) : (
           <div className="flex justify-center items-center text-2xl font-bold text-gray-800 dark:text-gray-200">
-            <div aria-hidden="true" />
+            <div aria-hidden="true" className="" />
 
             <Settings
-              size={256}
+              size={100}
               height={100}
               className=""
               style={{
                 animation: "spin 2s linear infinite",
               }}
             />
+            <span className="text-7xl font-extrabold tracking-widest animate-flicker ms-4">
+              LOADING
+            </span>
           </div>
         )}
       </div>

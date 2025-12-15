@@ -1,77 +1,94 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function AdminDashboard() {
+  const router = useRouter();
+
   return (
-    <div className="p-6">
+    <div className="max-w-7xl mx-auto space-y-10">
       {/* PAGE TITLE */}
-      <h2 className="bg-yellow-500 text-white py-5 mx-3 mb-8 text-center rounded-xl text-4xl font-extrabold shadow">
-        Rental Car Dashboard
-      </h2>
+      <div className="flex items-center justify-between bg-yellow-400 rounded-xl shadow-lg px-6 py-4">
+        <h1 className="text-white text-3xl font-bold tracking-wide">
+          Dashboard
+        </h1>
+        <Button variant="secondary" onClick={() => router.back()}>
+          Back
+        </Button>
+      </div>
 
       {/* STATS CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-blue-500 text-white rounded-xl p-6 shadow">
-          <h5 className="text-xl font-semibold">Total Cars</h5>
-          <p className="text-3xl mt-2">150</p>
+        <div className="bg-blue-500 text-white rounded-xl p-6 shadow-md">
+          <h5 className="text-lg font-medium opacity-90">Total Cars</h5>
+          <p className="text-4xl font-bold mt-2">150</p>
         </div>
 
-        <div className="bg-green-500 text-white rounded-xl p-6 shadow">
-          <h5 className="text-xl font-semibold">Available Cars</h5>
-          <p className="text-3xl mt-2">120</p>
+        <div className="bg-green-500 text-white rounded-xl p-6 shadow-md">
+          <h5 className="text-lg font-medium opacity-90">Available Cars</h5>
+          <p className="text-4xl font-bold mt-2">120</p>
         </div>
 
-        <div className="bg-red-500 text-white rounded-xl p-6 shadow">
-          <h5 className="text-xl font-semibold">Booked Cars</h5>
-          <p className="text-3xl mt-2">30</p>
+        <div className="bg-red-500 text-white rounded-xl p-6 shadow-md">
+          <h5 className="text-lg font-medium opacity-90">Booked Cars</h5>
+          <p className="text-4xl font-bold mt-2">30</p>
         </div>
       </div>
 
       {/* RECENT BOOKINGS */}
-      <div className="mt-10">
-        <h4 className="text-2xl font-semibold mb-4">Recent Bookings</h4>
+      <div className="space-y-4">
+        <h4 className="text-2xl font-semibold">Recent Bookings</h4>
 
-        <div className="overflow-x-auto rounded-lg shadow">
-          <table className="min-w-full text-left bg-white border border-gray-200">
+        <div className="overflow-x-auto rounded-xl shadow-md border bg-white">
+          <table className="min-w-full text-left">
             <thead className="bg-gray-100 border-b">
               <tr>
-                <th className="p-3 font-semibold">Booking ID</th>
-                <th className="p-3 font-semibold">Car Model</th>
-                <th className="p-3 font-semibold">Customer</th>
-                <th className="p-3 font-semibold">Status</th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-600">
+                  Booking ID
+                </th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-600">
+                  Car Model
+                </th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-600">
+                  Customer
+                </th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-600">
+                  Status
+                </th>
               </tr>
             </thead>
 
-            <tbody>
-              <tr className="border-b">
-                <td className="p-3">#001</td>
-                <td className="p-3">Toyota Corolla</td>
-                <td className="p-3">John Doe</td>
-                <td className="p-3">
-                  <span className="px-3 py-1 text-sm bg-green-500 text-white rounded">
+            <tbody className="divide-y">
+              <tr>
+                <td className="px-6 py-4">#001</td>
+                <td className="px-6 py-4">Toyota Corolla</td>
+                <td className="px-6 py-4">John Doe</td>
+                <td className="px-6 py-4">
+                  <span className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-full">
                     Confirmed
                   </span>
                 </td>
               </tr>
 
-              <tr className="border-b">
-                <td className="p-3">#002</td>
-                <td className="p-3">Honda Civic</td>
-                <td className="p-3">Jane Smith</td>
-                <td className="p-3">
-                  <span className="px-3 py-1 text-sm bg-yellow-400 text-black rounded">
+              <tr>
+                <td className="px-6 py-4">#002</td>
+                <td className="px-6 py-4">Honda Civic</td>
+                <td className="px-6 py-4">Jane Smith</td>
+                <td className="px-6 py-4">
+                  <span className="px-3 py-1 text-sm bg-yellow-100 text-yellow-700 rounded-full">
                     Pending
                   </span>
                 </td>
               </tr>
 
               <tr>
-                <td className="p-3">#003</td>
-                <td className="p-3">Ford Focus</td>
-                <td className="p-3">Mike Johnson</td>
-                <td className="p-3">
-                  <span className="px-3 py-1 text-sm bg-red-500 text-white rounded">
+                <td className="px-6 py-4">#003</td>
+                <td className="px-6 py-4">Ford Focus</td>
+                <td className="px-6 py-4">Mike Johnson</td>
+                <td className="px-6 py-4">
+                  <span className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded-full">
                     Cancelled
                   </span>
                 </td>
@@ -82,29 +99,29 @@ export default function AdminDashboard() {
       </div>
 
       {/* QUICK LINKS */}
-      <div className="mt-10">
-        <h4 className="text-2xl font-semibold mb-4">Quick Links</h4>
+      <div className="space-y-4">
+        <h4 className="text-2xl font-semibold">Quick Links</h4>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
-            href="/login/admin/add-car"
-            className="bg-blue-600 text-white text-center py-3 rounded-lg shadow hover:bg-blue-700 transition"
+            href="/login/admin/form"
+            className="bg-blue-600 text-white text-center py-4 rounded-xl shadow hover:bg-blue-700 transition font-medium"
           >
             Add New Car
           </Link>
 
           <Link
-            href="/login/admin/manage-bookings"
-            className="bg-yellow-500 text-gray-900 text-center py-3 rounded-lg shadow hover:bg-yellow-400 transition"
+            href="/login/admin/view_bookings"
+            className="bg-yellow-400 text-black text-center py-4 rounded-xl shadow hover:bg-yellow-300 transition font-medium"
           >
-            Manage Bookings
+            View Bookings
           </Link>
 
           <Link
-            href="/login/admin/car-reports"
-            className="bg-green-600 text-white text-center py-3 rounded-lg shadow hover:bg-green-700 transition"
+            href="/login/admin/completed_bookings"
+            className="bg-green-600 text-white text-center py-4 rounded-xl shadow hover:bg-green-700 transition font-medium"
           >
-            View Reports
+            Completed Bookings
           </Link>
         </div>
       </div>

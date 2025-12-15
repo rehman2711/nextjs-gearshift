@@ -36,24 +36,20 @@ const ViewBookings = () => {
 
   return (
     <>
+    <div className="mx-auto max-w-7xl">
       {/* Header */}
-      <div className="p-2 bg-yellow-400 flex justify-between items-center rounded-xl shadow-lg mx-10">
-        <h1 className="text-white text-3xl font-bold tracking-wide mx-auto">
+      <div className="flex items-center justify-between bg-yellow-400 rounded-xl shadow-lg px-6 py-4">
+          <h1 className="text-white text-3xl font-bold tracking-wide">
           ALL UPCOMING BOOKINGS
-        </h1>
-        <div>
-          <Button
-            onClick={() => {
-              router.back();
-            }}
-          >
+          </h1>
+          <Button variant="secondary" onClick={() => router.back()}>
             Back
           </Button>
         </div>
-      </div>
+
 
       {/* Bookings Grid */}
-      <div className="w-11/12 mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {viewCustomerBookings.map((val, index) => (
           <div
             key={index}
@@ -132,6 +128,7 @@ const ViewBookings = () => {
           </div>
         ))}
       </div>
+    </div>
     </>
   );
 };

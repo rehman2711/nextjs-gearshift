@@ -46,7 +46,38 @@ const DetailCars = () => {
   return (
     <>
       {/* Light Background */}
-      <div className="fixed inset-0 z-0 min-h-screen bg-gradient-to-b from-white to-gray-100" />
+      <div
+        className="fixed inset-0 z-0 min-h-screen"
+        style={{
+          background: `
+            /* TOP: subtle line texture */
+            repeating-linear-gradient(
+              45deg,
+              rgba(16, 185, 129, 0.06) 0,
+              rgba(16, 185, 129, 0.06) 1px,
+              transparent 1px,
+              transparent 20px
+            ),
+            repeating-linear-gradient(
+              -45deg,
+              rgba(6, 182, 212, 0.06) 0,
+              rgba(6, 182, 212, 0.06) 1px,
+              transparent 10px,
+              transparent 15px
+            ),
+        
+            /* MIDDLE: green-blue radial glows */
+            radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
+            radial-gradient(ellipse 100% 60% at 30% 10%, rgba(6, 182, 212, 0.16), transparent 60%),
+            radial-gradient(ellipse 90% 70% at 50% 0%, rgba(56, 189, 248, 0.14), transparent 65%),
+            radial-gradient(ellipse 110% 50% at 80% 30%, rgba(34, 197, 94, 0.10), transparent 40%),
+        
+            /* BASE */
+            rgb(254, 250, 250)
+          `,
+          backgroundSize: "40px 40px, 40px 40px, auto, auto, auto, auto, auto",
+        }}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 pt-14 pb-14">
         {/* Back button */}

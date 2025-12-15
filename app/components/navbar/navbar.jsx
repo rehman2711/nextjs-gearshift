@@ -10,8 +10,19 @@ export default function Navbar() {
   const router = useRouter();
   const path = usePathname();
 
-  console.log("Current path:", path);
+  /* ---------------- ADMIN ROUTES ---------------- */
+  const adminRoutes = [
+    "/login/admin",
+    "/login/admin/dashboard",
+    "/login/admin/form",
+    "/login/admin/manage_data",
+    "/login/admin/view_bookings",
+    "/login/admin/completed_bookings",
+  ];
 
+  const isAdminRoute = adminRoutes.includes(path);
+
+  /* ---------------- NAV ITEMS ---------------- */
   const topNavItems = [
     { title: "Models", href: "/models" },
     { title: "Gallary", href: "/gallary" },
@@ -21,29 +32,39 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 right-0 z-10 w-full border-b bg-white/80 z-100">
+    <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur">
       <div className="container mx-auto max-w-6xl px-4 lg:px-0">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo Section */}
+          {/* Logo */}
           <Link
             href="/"
             className="flex items-center space-x-2 text-2xl text-black"
           >
             <Settings />
-            <span className=" text-foreground">Gearshift</span>
+            <span className="text-foreground">Gearshift</span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-10">
-            {topNavItems.map((item) => (
-              <Link
-                key={item.title}
-                href={item.href}
-                className="text-base  hover:underline decoration-green-500 underline-offset-8 decoration-2 transition-all duration-300"
-              >
-                {item.title}
-              </Link>
-            ))}
+            {topNavItems.map((item) => {
+              const isActive = path === item.href;
+
+              return (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className={`relative text-base transition-all duration-300
+                    ${
+                      isActive
+                        ? "after:absolute after:left-0 after:-bottom-2 after:h-[3px] after:w-full after:bg-yellow-400"
+                        : "hover:after:absolute hover:after:left-0 hover:after:-bottom-2 hover:after:h-[3px] hover:after:w-full hover:after:bg-yellow-400"
+                    }
+                  `}
+                >
+                  {item.title}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile Menu */}
@@ -51,41 +72,27 @@ export default function Navbar() {
             <HamburgerMenu />
           </div>
 
-          {/* Desktop Login Button */}
+          {/* Desktop Login / Admin Status */}
           <div className="hidden lg:flex items-center space-x-3">
-            {path !== "/login" &&
-              path !== "/login/admin" &&
-              path !== "/login/admin/dashboard" &&
-              path !== "/login/admin/form" &&
-              path !== "/login/admin/manage_data" &&
-              path !== "/login/admin/view_bookings" && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className=" text-sm px-4 py-2 bg-green-400/80 border border-gray-300 rounded-md hover:bg-green-400/70 transition-all"
-                  onClick={() => {
-                    router.push("/login");
-                  }}
-                >
-                  Login as Admin
-                </Button>
-              )}
-            {(path === "/login/admin" ||
-              path === "/login/admin/dashboard" ||
-              path === "/login/admin/form" ||
-              path === "/login/admin/manage_data" ||
-              path === "/login/admin/view_bookings") && (
-              <div className="hidden lg:flex items-center space-x-3">
-                {
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className=" text-sm px-4 py-2 bg-green-400 border border-gray-300 rounded-md hover:bg-green-500 transition-all"
-                  >
-                    You logged in as admin
-                  </Button>
-                }
-              </div>
+            {!isAdminRoute && path !== "/login" && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-sm px-4 py-2 bg-green-400/80 border border-gray-300 rounded-md hover:bg-green-400/70 transition-all"
+                onClick={() => router.push("/login")}
+              >
+                Login as Admin
+              </Button>
+            )}
+
+            {isAdminRoute && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-sm px-4 py-2 bg-green-400 border border-gray-300 rounded-md hover:bg-green-500 transition-all cursor-default"
+              >
+                You logged in as admin
+              </Button>
             )}
           </div>
         </div>

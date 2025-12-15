@@ -4,11 +4,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function RentTheCarNow() {
   const router = useRouter();
   const params = useParams();
 
+  const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState({});
   const [selectedCar, setSelectedCar] = useState(null);
 
   const [customer, setCustomer] = useState({
@@ -24,7 +28,7 @@ export default function RentTheCarNow() {
     customerImage: null,
   });
 
-  // Fetch car by ID
+  /* ---------------- FETCH SELECTED CAR ---------------- */
   useEffect(() => {
     const fetchCar = async () => {
       try {
@@ -49,37 +53,59 @@ export default function RentTheCarNow() {
     fetchCar();
   }, [params]);
 
+  /* ---------------- HANDLERS ---------------- */
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setCustomer((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setCustomer((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files?.[0] || null;
     setCustomer((prev) => ({
       ...prev,
-      customerImage: file,
+      customerImage: e.target.files?.[0] || null,
     }));
   };
 
+  /* ---------------- VALIDATION ---------------- */
+  const validateStep1 = () => {
+    const err = {};
+    if (!customer.customerName) err.customerName = "Required";
+    if (!customer.customerMobile) err.customerMobile = "Required";
+    if (!customer.customerEmail) err.customerEmail = "Required";
+    if (!customer.customerGender) err.customerGender = "Required";
+    if (!customer.customerAddress) err.customerAddress = "Required";
+
+    setErrors(err);
+    return Object.keys(err).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const err = {};
+    if (!customer.customerChoosenCarFrom)
+      err.customerChoosenCarFrom = "Required";
+    if (!customer.customerChoosenCarTo)
+      err.customerChoosenCarTo = "Required";
+
+    setErrors(err);
+    return Object.keys(err).length === 0;
+  };
+
+  /* ---------------- SUBMIT ---------------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateStep2()) return;
 
     try {
       const formData = new FormData();
-      for (let key in customer) {
-        formData.append(key, customer[key]);
-      }
+      Object.entries(customer).forEach(([k, v]) =>
+        formData.append(k, v)
+      );
 
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/book-car`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/book-car`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
       router.push("/");
     } catch (err) {
@@ -87,170 +113,172 @@ export default function RentTheCarNow() {
     }
   };
 
+  /* ---------------- UI ---------------- */
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-white to-gray-100 text-gray-900 py-12 px-4">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div className="min-h-screen py-10 px-4 bg-gradient-to-b from-white to-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl border p-10 rounded-3xl shadow-2xl space-y-10"
+      >
+        <h2 className="text-3xl font-bold text-center text-blue-600">
+          Rent The Car
+        </h2>
 
-        {/* FORM */}
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white border border-gray-200 p-8 rounded-2xl shadow-lg"
-        >
-          <h2 className="text-3xl font-bold text-center mb-6 text-blue-600">
-            Provide Documents
-          </h2>
+        {/* ================= STEP 1 ================= */}
+        {step === 1 && (
+          <section className="space-y-6">
+            <h3 className="text-xl font-semibold">Personal Details</h3>
 
-          {/* Name */}
-          <label className="text-sm font-medium">Customer Name</label>
-          <input
-            name="customerName"
-            value={customer.customerName}
-            onChange={handleChange}
-            required
-            placeholder="Enter Your Name"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-          />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                ["Customer Name", "customerName"],
+                ["Mobile Number", "customerMobile"],
+                ["Email Address", "customerEmail"],
+                ["Residential Address", "customerAddress"],
+              ].map(([label, name]) => (
+                <div key={name}>
+                  <Label className="mb-1">{label}</Label>
+                  <Input
+                    name={name}
+                    value={customer[name]}
+                    onChange={handleChange}
+                  />
+                  {errors[name] && (
+                    <p className="text-xs text-red-500 mt-1">{errors[name]}</p>
+                  )}
+                </div>
+              ))}
 
-          {/* Mobile */}
-          <label className="text-sm font-medium">Mobile Number</label>
-          <input
-            name="customerMobile"
-            value={customer.customerMobile}
-            onChange={handleChange}
-            required
-            type="tel"
-            placeholder="Enter Your Number"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-          />
+              <div>
+                <Label>Gender</Label>
+                <select
+                  name="customerGender"
+                  value={customer.customerGender}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg"
+                >
+                  <option value="">Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+                {errors.customerGender && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.customerGender}
+                  </p>
+                )}
+              </div>
 
-          {/* Email */}
-          <label className="text-sm font-medium">Email Address</label>
-          <input
-            name="customerEmail"
-            value={customer.customerEmail}
-            onChange={handleChange}
-            required
-            type="email"
-            placeholder="Enter Your Email"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-          />
+              <div>
+                <Label>PAN Number</Label>
+                <Input
+                  name="customerPAN"
+                  value={customer.customerPAN}
+                  onChange={handleChange}
+                  placeholder="ABCDE1234F"
+                />
+              </div>
 
-          {/* Gender */}
-          <label className="text-sm font-medium">Gender</label>
-          <select
-            name="customerGender"
-            value={customer.customerGender}
-            onChange={handleChange}
-            required
-            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-
-          {/* Address */}
-          <label className="text-sm font-medium">Residential Address</label>
-          <input
-            name="customerAddress"
-            value={customer.customerAddress}
-            onChange={handleChange}
-            required
-            placeholder="Enter Your Address"
-            className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* PAN */}
-            <div>
-              <label className="text-sm font-medium">PAN Card No</label>
-              <input
-                name="customerPAN"
-                value={customer.customerPAN}
-                onChange={handleChange}
-                placeholder="ABCDE1234F"
-                pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
-                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-              />
+              <div>
+                <Label>Customer Photo</Label>
+                <Input type="file" onChange={handleFileChange} />
+              </div>
             </div>
 
-            {/* Car Name */}
-            <div>
-              <label className="text-sm font-medium">Car Name</label>
-              <input
-                value={selectedCar?.carName || ""}
-                readOnly
-                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg"
-              />
+            <Button
+              type="button"
+              onClick={() => validateStep1() && setStep(2)}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Continue
+            </Button>
+          </section>
+        )}
+
+        {/* ================= STEP 2 ================= */}
+        {step === 2 && (
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {/* LEFT */}
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold">Booking Details</h3>
+
+              <div>
+                <Label>Selected Car</Label>
+                <Input
+                  value={selectedCar?.carName || ""}
+                  readOnly
+                  className="bg-gray-100"
+                />
+              </div>
+
+              <div>
+                <Label>From Date</Label>
+                <Input
+                  type="date"
+                  name="customerChoosenCarFrom"
+                  value={customer.customerChoosenCarFrom}
+                  onChange={handleChange}
+                />
+                {errors.customerChoosenCarFrom && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.customerChoosenCarFrom}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label>To Date</Label>
+                <Input
+                  type="date"
+                  name="customerChoosenCarTo"
+                  value={customer.customerChoosenCarTo}
+                  onChange={handleChange}
+                />
+                {errors.customerChoosenCarTo && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.customerChoosenCarTo}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setStep(1)}
+                >
+                  Back
+                </Button>
+
+                <Button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Submit Booking
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {/* Dates */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium">Choosing Car From</label>
-              <input
-                type="date"
-                name="customerChoosenCarFrom"
-                value={customer.customerChoosenCarFrom}
-                onChange={handleChange}
-                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-              />
+            {/* RIGHT – CAR PREVIEW */}
+            <div className="bg-white/70 p-6 rounded-2xl shadow-xl border flex flex-col items-center">
+              <h4 className="text-lg font-semibold mb-4">
+                You Chose{" "}
+                <span className="text-blue-600">
+                  {selectedCar?.carName}
+                </span>
+              </h4>
+
+              {selectedCar?.carImageMain ? (
+                <img
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
+                  className="rounded-xl shadow-md"
+                />
+              ) : (
+                <p className="text-gray-500 mt-20">Loading image...</p>
+              )}
             </div>
-
-            <div>
-              <label className="text-sm font-medium">Choosing Car To</label>
-              <input
-                type="date"
-                name="customerChoosenCarTo"
-                value={customer.customerChoosenCarTo}
-                onChange={handleChange}
-                className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-              />
-            </div>
-          </div>
-
-          {/* Customer Photo */}
-          <div className="mt-2">
-            <label className="text-sm font-medium">Customer Photo</label>
-            <input
-              type="file"
-              name="customerImage"
-              onChange={handleFileChange}
-              className="w-full mt-1 mb-4 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg"
-            />
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg"
-          >
-            Submit Form
-          </Button>
-        </form>
-
-        {/* CAR PREVIEW */}
-        <div className="flex flex-col items-center justify-center px-4">
-          <h3 className="text-2xl font-semibold mb-4">
-            YOU CHOSE
-            <span className="ml-2 text-blue-600">
-              {selectedCar?.carName || "—"}
-            </span>
-          </h3>
-
-          {selectedCar?.carImageMain ? (
-            <img
-              src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
-              className="w-full max-w-md rounded-2xl shadow-lg border border-gray-200"
-            />
-          ) : (
-            <div className="w-full max-w-md h-56 bg-gray-100 border border-gray-300 rounded-2xl flex items-center justify-center text-gray-500">
-              Loading image...
-            </div>
-          )}
-        </div>
-
-      </div>
+          </section>
+        )}
+      </form>
     </div>
   );
 }
