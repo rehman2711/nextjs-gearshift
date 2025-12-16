@@ -24,7 +24,7 @@ const AdminPanelIndex = () => {
     <>
       {/* HEADER */}
       <div className="text-center mt-10">
-        <h2 className="mb-6 text-5xl font-extrabold">
+        <h2 className="mb-6 text-5xl font-extrabold uppercase">
           Welcome to the Admin Panel
         </h2>
       </div>
