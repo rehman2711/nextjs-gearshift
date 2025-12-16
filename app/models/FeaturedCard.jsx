@@ -50,7 +50,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
             key={car.id}
             data-card
             layout
-            className="relative rounded-2xl border border-gray-200 shadow-lg overflow-hidden"
+            className="relative rounded-2xl border border-gray-200 shadow-xl border-t-2 border-gray-300 overflow-hidden"
           >
             <div className="h-full w-full flex flex-col justify-center items-center p-4">
               <h3 className="text-xl font-bold text-gray-800 mb-2">
@@ -77,7 +77,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                     setOpenId(car.id);
                   }}
                 >
-                  <Badge className="bg-green-400 hover:bg-green-400/70 rounded-sm">
+                  <Badge className="bg-green-400 hover:bg-green-400/70 rounded-sm active:translate-y-2 active:translate-x-1 transition duration-300">
                     See Details
                   </Badge>
                 </button>
@@ -143,7 +143,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
               `,
             }}
           >
-            <button onClick={closeModal} className="absolute top-4 right-4">
+            <button onClick={closeModal} className="absolute top-4 right-4 active:translate-y-2 active:translate-x-1 transition duration-300">
               <Badge variant="destructive">Close</Badge>
             </button>
 

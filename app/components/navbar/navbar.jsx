@@ -22,7 +22,7 @@ export default function Navbar() {
     { title: "Models", href: "/models" },
     { title: "Gallary", href: "/gallary" },
     { title: "About", href: "/about" },
-    { title: "Contacts", href: "/contact" },
+    { title: "Contact us", href: "/contact" },
     { title: "Book_Now", href: "/book_now" },
   ];
 
