@@ -77,7 +77,6 @@ export default function RentTheCarNow() {
     if (!customer.customerEmail) err.customerEmail = "Required";
     if (!customer.customerGender) err.customerGender = "Required";
     if (!customer.customerAddress) err.customerAddress = "Required";
-
     setErrors(err);
     return Object.keys(err).length === 0;
   };
@@ -86,8 +85,8 @@ export default function RentTheCarNow() {
     const err = {};
     if (!customer.customerChoosenCarFrom)
       err.customerChoosenCarFrom = "Required";
-    if (!customer.customerChoosenCarTo) err.customerChoosenCarTo = "Required";
-
+    if (!customer.customerChoosenCarTo)
+      err.customerChoosenCarTo = "Required";
     setErrors(err);
     return Object.keys(err).length === 0;
   };
@@ -98,7 +97,6 @@ export default function RentTheCarNow() {
     if (!validateStep2()) return;
 
     setIsLoading(true);
-
     try {
       const formData = new FormData();
       Object.entries(customer).forEach(([k, v]) => formData.append(k, v));
@@ -109,24 +107,11 @@ export default function RentTheCarNow() {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      toast.success("Booking Completed.", {
-        duration: 10000, // 10 seconds
-        style: {
-          border: "1px solid rgb(22, 163, 74)", // green-600
-          padding: "10px",
-          color: "#065f46", // emerald-800
-          background: "#ecfdf5", // green-50
-        },
-        iconTheme: {
-          primary: "#16a34a",
-          secondary: "#ecfdf5",
-        },
-      });
+      toast.success("Booking Completed.", { duration: 10000 });
 
       setSelectedCar(null);
       setStep(1);
       setErrors({});
-
       router.replace("/models");
     } catch (err) {
       console.error("Error submitting booking:", err);
@@ -135,26 +120,25 @@ export default function RentTheCarNow() {
     }
   };
 
-  // Submit after loading
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (isLoading) return <Loader />;
 
   /* ---------------- UI ---------------- */
   return (
-    <div className="min-h-screen py-10 px-4 bg-gradient-to-b from-white to-gray-100">
+    <div className="min-h-screen py-8 sm:py-10 px-4 bg-gradient-to-b from-white to-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl border p-10 rounded-3xl shadow-2xl space-y-10"
+        className="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl border p-6 sm:p-8 lg:p-10 rounded-3xl shadow-2xl space-y-8 sm:space-y-10"
       >
-        <h2 className="text-3xl font-bold text-center text-blue-600">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-600">
           Rent The Car
         </h2>
 
         {/* ================= STEP 1 ================= */}
         {step === 1 && (
           <section className="space-y-6">
-            <h3 className="text-xl font-semibold">Personal Details</h3>
+            <h3 className="text-lg sm:text-xl font-semibold">
+              Personal Details
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
@@ -226,10 +210,12 @@ export default function RentTheCarNow() {
 
         {/* ================= STEP 2 ================= */}
         {step === 2 && (
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
             {/* LEFT */}
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold">Booking Details</h3>
+              <h3 className="text-lg sm:text-xl font-semibold">
+                Booking Details
+              </h3>
 
               <div>
                 <Label className="mb-2 ms-1">Selected Car</Label>
@@ -270,10 +256,11 @@ export default function RentTheCarNow() {
                 )}
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Button
                   type="button"
                   variant="outline"
+                  className="w-full sm:w-auto"
                   onClick={() => setStep(1)}
                 >
                   Back
@@ -281,16 +268,16 @@ export default function RentTheCarNow() {
 
                 <Button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   Submit Booking
                 </Button>
               </div>
             </div>
 
-            {/* RIGHT – CAR PREVIEW */}
-            <div className="bg-white/70 p-6 rounded-2xl shadow-xl border flex flex-col items-center">
-              <h4 className="text-lg font-semibold mb-4">
+            {/* RIGHT – PREVIEW */}
+            <div className="bg-white/70 p-4 sm:p-6 rounded-2xl shadow-xl border flex flex-col items-center">
+              <h4 className="text-base sm:text-lg font-semibold mb-4 text-center">
                 You Chose{" "}
                 <span className="text-blue-600">{selectedCar?.carName}</span>
               </h4>
@@ -298,10 +285,10 @@ export default function RentTheCarNow() {
               {selectedCar?.carImageMain ? (
                 <img
                   src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
-                  className="rounded-xl shadow-md"
+                  className="rounded-xl shadow-md w-full max-h-[300px] object-cover"
                 />
               ) : (
-                <p className="text-gray-500 mt-20">Loading image...</p>
+                <p className="text-gray-500 mt-16">Loading image...</p>
               )}
             </div>
           </section>

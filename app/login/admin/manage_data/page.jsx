@@ -51,25 +51,23 @@ const AdminShowAll = () => {
     if (!selectedCarId) return;
 
     try {
-      // Optimistic UI
       setCars((prev) => prev.filter((car) => car.id !== selectedCarId));
-
       await axios.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/delete-car/${selectedCarId}`
       );
     } catch (error) {
       console.error("Delete failed:", error);
-      fetchData(); // rollback
+      fetchData();
     } finally {
       setSelectedCarId(null);
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6">
       {/* HEADER */}
       <div
-        className="flex items-center justify-between rounded-xl shadow-lg px-6 py-4"
+        className="flex flex-col sm:flex-row items-center gap-4 rounded-xl shadow-lg px-4 sm:px-6 py-4"
         style={{
           backgroundImage: `
             repeating-linear-gradient(22.5deg, transparent, transparent 2px, rgba(75,85,99,0.06) 2px, rgba(75,85,99,0.06) 3px, transparent 3px, transparent 8px),
@@ -77,13 +75,14 @@ const AdminShowAll = () => {
           `,
         }}
       >
-        <h1 className="text-black mx-auto text-3xl font-bold">
+        <h1 className="text-black text-2xl sm:text-3xl font-bold mx-auto text-center">
           All Rental Cars
         </h1>
+
         <Button
           variant="secondary"
           onClick={() => router.back()}
-          className="bg-yellow-400/50 hover:bg-yellow-500/50"
+          className="bg-yellow-400/50 hover:bg-yellow-500/50 w-full sm:w-auto"
         >
           Back
         </Button>
@@ -94,13 +93,15 @@ const AdminShowAll = () => {
         {cars.map((car) => (
           <div
             key={car.id}
-            className="bg-white rounded-2xl shadow-md p-4 relative"
+            className="bg-white rounded-2xl shadow-md p-4 relative flex flex-col"
           >
-            <span className="absolute right-5 top-5 bg-yellow-400 px-3 py-1 rounded-md text-sm font-semibold">
+            {/* YEAR BADGE */}
+            <span className="absolute right-4 top-4 bg-yellow-400 px-3 py-1 rounded-md text-xs sm:text-sm font-semibold">
               {car.carManufactureYear}
             </span>
 
-            <div className="w-full h-52 rounded-lg overflow-hidden">
+            {/* IMAGE */}
+            <div className="w-full h-48 sm:h-52 rounded-lg overflow-hidden">
               <img
                 src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`}
                 alt={car.carName}
@@ -108,17 +109,27 @@ const AdminShowAll = () => {
               />
             </div>
 
-            <h3 className="mt-4 text-xl font-bold">{car.carName}</h3>
+            {/* INFO */}
+            <h3 className="mt-4 text-lg sm:text-xl font-bold">
+              {car.carName}
+            </h3>
 
-            <div className="mt-2 text-lg">
+            <div className="mt-2 text-base sm:text-lg">
               {car.carCurrency}
-              <span className="font-bold text-2xl"> {car.carRent}</span> / Day
+              <span className="font-bold text-xl sm:text-2xl">
+                {" "}
+                {car.carRent}
+              </span>{" "}
+              / Day
             </div>
 
             {/* ACTIONS */}
-            <div className="flex justify-between mt-5">
-              <Button className="bg-green-600 hover:bg-green-700">
-                <Link href={`/login/admin/manage_data/car_edit/${car.id}`}>
+            <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:justify-between">
+              <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
+                <Link
+                  href={`/login/admin/manage_data/car_edit/${car.id}`}
+                  className="w-full block text-center"
+                >
                   Edit
                 </Link>
               </Button>
@@ -127,6 +138,7 @@ const AdminShowAll = () => {
                 <AlertDialogTrigger asChild>
                   <Button
                     variant="destructive"
+                    className="w-full sm:w-auto"
                     onClick={() => setSelectedCarId(car.id)}
                   >
                     Delete
@@ -135,17 +147,21 @@ const AdminShowAll = () => {
 
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Delete this car?</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Delete this car?
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. The car will be permanently
                       removed.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
 
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogFooter className="flex flex-col sm:flex-row gap-3">
+                    <AlertDialogCancel className="w-full sm:w-auto">
+                      Cancel
+                    </AlertDialogCancel>
                     <AlertDialogAction
-                      className="bg-red-600 hover:bg-red-700"
+                      className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
                       onClick={handleDelete}
                     >
                       Yes, Delete

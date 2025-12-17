@@ -1,5 +1,5 @@
 "use client";
-import React, { Activity, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,20 +46,14 @@ const RentNow = () => {
         setIsLoading(false);
       }
     };
-
     fetchCars();
   }, []);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (isLoading) return <Loader />;
 
   /* -------------------- HANDLERS -------------------- */
   const handleChange = (e) => {
-    setCustomer((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setCustomer((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleFileChange = (e) => {
@@ -71,27 +65,23 @@ const RentNow = () => {
 
   const handleCarChange = (e) => {
     const carId = e.target.value;
-
-    setCustomer((prev) => ({
-      ...prev,
-      customerChoosenCar: carId,
-    }));
-
-    const foundCar = cars.find((car) => String(car.id) === String(carId));
-
-    setSelectedCar(foundCar || null);
+    setCustomer((prev) => ({ ...prev, customerChoosenCar: carId }));
+    setSelectedCar(cars.find((c) => String(c.id) === String(carId)) || null);
   };
 
   /* -------------------- VALIDATION -------------------- */
   const validateStep1 = () => {
     const newErrors = {};
-    if (!customer.customerName) newErrors.customerName = "Required";
-    if (!customer.customerMobile) newErrors.customerMobile = "Required";
-    if (!customer.customerEmail) newErrors.customerEmail = "Required";
-    if (!customer.customerGender) newErrors.customerGender = "Required";
-    if (!customer.customerAddress) newErrors.customerAddress = "Required";
-    if (!customer.customerPAN) newErrors.customerPAN = "Required";
-
+    [
+      "customerName",
+      "customerMobile",
+      "customerEmail",
+      "customerGender",
+      "customerAddress",
+      "customerPAN",
+    ].forEach((f) => {
+      if (!customer[f]) newErrors[f] = "Required";
+    });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -103,7 +93,6 @@ const RentNow = () => {
       newErrors.customerChoosenCarFrom = "Required";
     if (!customer.customerChoosenCarTo)
       newErrors.customerChoosenCarTo = "Required";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -114,7 +103,6 @@ const RentNow = () => {
     if (!validateStep2()) return;
 
     setIsLoading(true);
-
     try {
       const formData = new FormData();
       Object.entries(customer).forEach(([k, v]) => formData.append(k, v));
@@ -122,9 +110,7 @@ const RentNow = () => {
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/book-car`,
         formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       setCustomer(initialCustomerState);
@@ -133,19 +119,7 @@ const RentNow = () => {
       setErrors({});
       router.replace("/models");
 
-      toast.success("Booking Completed.", {
-        duration: 10000, // 10 seconds
-        style: {
-          border: "1px solid rgb(22, 163, 74)", // green-600
-          padding: "10px",
-          color: "#065f46", // emerald-800
-          background: "#ecfdf5", // green-50
-        },
-        iconTheme: {
-          primary: "#16a34a",
-          secondary: "#ecfdf5",
-        },
-      });
+      toast.success("Booking Completed.", { duration: 8000 });
     } catch (err) {
       console.error("Error submitting booking:", err);
     } finally {
@@ -155,19 +129,21 @@ const RentNow = () => {
 
   /* -------------------- UI -------------------- */
   return (
-    <div className="min-h-screen py-10 px-4">
+    <div className="min-h-screen py-8 sm:py-10 px-4">
       <form
         onSubmit={handleSubmit}
-        className="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl border p-10 rounded-3xl shadow-2xl space-y-10"
+        className="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl border p-6 sm:p-8 lg:p-10 rounded-3xl shadow-2xl space-y-8 sm:space-y-10"
       >
-        <h2 className="text-3xl font-bold text-center text-yellow-500">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-yellow-500">
           Rent a Car — Premium Service
         </h2>
 
         {/* ================= STEP 1 ================= */}
         {step === 1 && (
           <section className="space-y-6">
-            <h3 className="text-xl font-semibold">Personal Details</h3>
+            <h3 className="text-lg sm:text-xl font-semibold">
+              Personal Details
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
@@ -228,11 +204,13 @@ const RentNow = () => {
         {/* ================= STEP 2 ================= */}
         {step === 2 && (
           <section className="space-y-6">
-            <h3 className="text-xl font-semibold">Car Booking Details</h3>
+            <h3 className="text-lg sm:text-xl font-semibold">
+              Car Booking Details
+            </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex flex-col gap-8">
-                {/* 1 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* LEFT */}
+              <div className="flex flex-col gap-6">
                 <div>
                   <Label className="mb-2 ms-1">Choose Car</Label>
                   <select
@@ -253,7 +231,7 @@ const RentNow = () => {
                     </p>
                   )}
                 </div>
-                {/* 2 */}
+
                 <div>
                   <Label className="mb-2 ms-1">From Date</Label>
                   <Input
@@ -264,7 +242,6 @@ const RentNow = () => {
                   />
                 </div>
 
-                {/* 3 */}
                 <div>
                   <Label className="mb-2 ms-1">To Date</Label>
                   <Input
@@ -275,10 +252,11 @@ const RentNow = () => {
                   />
                 </div>
 
-                <div className="flex gap-4 pt-4">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <Button
                     type="button"
                     variant="outline"
+                    className="w-full sm:w-auto"
                     onClick={() => {
                       setStep(1);
                       setSelectedCar(null);
@@ -289,43 +267,36 @@ const RentNow = () => {
 
                   <Button
                     type="submit"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black"
+                    className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-black"
                   >
                     Submit Booking
                   </Button>
                 </div>
               </div>
-              {/* CAR SELECT */}
 
-              <Activity>
-                {/* CAR PREVIEW */}
-                <div className="p-5 bg-white/70 rounded-xl shadow-xl border-t">
-                  {/* <h4 className="text-lg font-semibold mb-3">Car Preview</h4> */}
-
-                  {/* <div className="h-[420px] overflow-y-auto border rounded-xl p-4 bg-white"> */}
-                  {selectedCar ? (
-                    <>
-                      <p className="font-medium mb-2">
-                        You Selected:{" "}
-                        <span className="text-yellow-500">
-                          {selectedCar.carName}
-                        </span>
-                      </p>
-
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
-                        alt="Car"
-                        className="w-full rounded-xl shadow-md"
-                      />
-                    </>
-                  ) : (
-                    <p className="text-center mt-24 text-gray-500">
-                      Select a car to preview
+              {/* RIGHT — PREVIEW */}
+              <div className="p-5 bg-white/70 rounded-xl shadow-xl border-t flex items-center justify-center">
+                {selectedCar ? (
+                  <div className="space-y-3 w-full">
+                    <p className="font-medium text-center">
+                      You Selected:{" "}
+                      <span className="text-yellow-500">
+                        {selectedCar.carName}
+                      </span>
                     </p>
-                  )}
-                  {/* </div> */}
-                </div>
-              </Activity>
+
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
+                      alt="Car"
+                      className="w-full max-h-[320px] object-cover rounded-xl shadow-md"
+                    />
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-center">
+                    Select a car to preview
+                  </p>
+                )}
+              </div>
             </div>
           </section>
         )}

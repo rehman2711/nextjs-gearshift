@@ -1,7 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import React, { useRef, useState, useLayoutEffect } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import { Canvas, useFrame, applyProps } from "@react-three/fiber";
 import {
   PerformanceMonitor,

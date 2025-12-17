@@ -10,20 +10,14 @@ export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoader(false);
-    }, 2000);
-
+    const timer = setTimeout(() => setShowLoader(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  if (showLoader) {
-    return <Loader />;
-  }
+  if (showLoader) return <Loader />;
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -39,10 +33,9 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen w-full bg-white text-white flex flex-col"
+      className="min-h-screen w-full bg-white flex flex-col"
       style={{
         backgroundImage: `
-          /* TOP — subtle pattern texture */
           repeating-linear-gradient(
             0deg,
             transparent,
@@ -71,36 +64,36 @@ export default function LoginPage() {
             rgba(31, 41, 55, 0.04) 35px,
             rgba(31, 41, 55, 0.04) 36px
           ),
-      
-          /* MIDDLE — soft color glow */
           radial-gradient(circle 600px at 0% 200px, #fef3c7, transparent),
           radial-gradient(circle 600px at 100% 200px, #fef3c7, transparent)
         `,
       }}
     >
-      <div className="container mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between py-20 gap-20">
-        {/* RIGHT SIDE IMAGE */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-center lg:justify-between py-16 sm:py-20 gap-12 lg:gap-20">
+        {/* RIGHT IMAGE (DESKTOP ONLY) */}
         <div className="flex-1 hidden lg:flex justify-end">
           <div
-            className="w-[850px] h-[450px] rounded-2xl bg-cover bg-center shadow-2xl"
-            style={{
-              backgroundImage: "url('/login-car.jpg')",
-            }}
+            className="w-[750px] xl:w-[850px] h-[420px] xl:h-[450px] rounded-2xl bg-cover bg-center shadow-2xl"
+            style={{ backgroundImage: "url('/login-car.jpg')" }}
           />
         </div>
 
-        {/* LEFT SECTION */}
-        <div className="flex-1 max-w-md space-y-8">
-          <h1 className="text-4xl font-semibold text-black">Welcome Back</h1>
+        {/* LOGIN FORM */}
+        <div className="flex-1 max-w-md w-full space-y-8">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-black">
+            Welcome Back
+          </h1>
 
-          <p className="text-neutral-600 text-lg -mt-3">
+          <p className="text-neutral-600 text-base sm:text-lg -mt-3">
             Login to continue your journey.
           </p>
 
           {/* GOOGLE LOGIN */}
-          <Button className="w-full py-5 bg-neutral-900 border border-neutral-700 rounded-xl flex items-center justify-center gap-3 hover:bg-neutral-800 transition">
+          <Button className="w-full py-4 sm:py-5 bg-neutral-900 border border-neutral-700 rounded-xl flex items-center justify-center gap-3 hover:bg-neutral-800 transition">
             <img src="/google-color.svg" className="w-5 h-5" />
-            <span className="text-white">Continue with Google</span>
+            <span className="text-white text-sm sm:text-base">
+              Continue with Google
+            </span>
           </Button>
 
           {/* OR */}
@@ -110,39 +103,36 @@ export default function LoginPage() {
             <div className="h-px flex-1 bg-neutral-800" />
           </div>
 
-          {/* LOGIN FORM */}
+          {/* FORM */}
           <form onSubmit={handleLogin} className="space-y-5">
-            {/* USERNAME */}
             <Input
               type="text"
               placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full px-4 py-5 bg-transparent border border-neutral-700 rounded-xl focus:border-1 !focus:ring-1 !ring-yellow-300 focus:ring-1 outline-none text-black"
+              className="w-full px-4 py-4 sm:py-5 bg-transparent border border-neutral-700 rounded-xl outline-none text-black"
             />
 
-            {/* PASSWORD */}
             <Input
               type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-5 bg-transparent border border-neutral-700 rounded-xl focus:border-1 !focus:ring-1 !ring-yellow-300  outline-none text-black"
+              className="w-full px-4 py-4 sm:py-5 bg-transparent border border-neutral-700 rounded-xl outline-none text-black"
             />
 
             <div className="text-right">
               <Button
                 type="button"
-                className="text-white hover:text-white text-sm"
+                className="text-white hover:text-white text-sm hover:underline underline-offset-4"
                 onClick={() => router.push("/forgot-password")}
               >
                 Forgot password ?
               </Button>
             </div>
 
-            {/* LOGIN BUTTON */}
             <Button
               type="submit"
               className="w-full bg-yellow-300/80 text-black hover:bg-yellow-300/70"
@@ -151,7 +141,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="text-neutral-600 text-sm pt-4">
+          <p className="text-neutral-600 text-sm pt-4 text-center sm:text-left">
             Don’t have an account?{" "}
             <button
               onClick={() => router.refresh()}

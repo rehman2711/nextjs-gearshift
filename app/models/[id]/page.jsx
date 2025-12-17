@@ -6,10 +6,6 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Loader from "@/app/loader";
 
-/* -------------------------------------------------- */
-/* MAIN COMPONENT */
-/* -------------------------------------------------- */
-
 const DetailCars = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -37,25 +33,22 @@ const DetailCars = () => {
     fetchData();
   }, [id]);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  if (isLoading) return <Loader />;
 
   if (!carData?.carName)
     return (
-      <div className="text-center text-gray-700 text-2xl mt-40">
+      <div className="text-center text-gray-700 text-xl sm:text-2xl mt-32">
         Car not found
       </div>
     );
 
   return (
     <>
-      {/* Light Background */}
+      {/* Background */}
       <div
         className="fixed inset-0 z-0 min-h-screen"
         style={{
           background: `
-            /* TOP: subtle line texture */
             repeating-linear-gradient(
               45deg,
               rgba(16, 185, 129, 0.06) 0,
@@ -70,46 +63,39 @@ const DetailCars = () => {
               transparent 10px,
               transparent 15px
             ),
-        
-            /* MIDDLE: green-blue radial glows */
             radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
             radial-gradient(ellipse 100% 60% at 30% 10%, rgba(6, 182, 212, 0.16), transparent 60%),
-            radial-gradient(ellipse 90% 70% at 50% 0%, rgba(56, 189, 248, 0.14), transparent 65%),
-            radial-gradient(ellipse 110% 50% at 80% 30%, rgba(34, 197, 94, 0.10), transparent 40%),
-        
-            /* BASE */
             rgb(254, 250, 250)
           `,
-          backgroundSize: "40px 40px, 40px 40px, auto, auto, auto, auto, auto",
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 pt-14 pb-14">
-        {/* Back button */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-10 pb-16">
+        {/* Back */}
         <Button
           onClick={() => router.back()}
-          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition mb-6 border border-gray-300"
+          className="bg-gray-200 text-gray-800 hover:bg-gray-300 mb-6"
         >
           ← Back
         </Button>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* LEFT — Image Gallery */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
+          {/* LEFT */}
           <div>
-            <div className="rounded-3xl overflow-hidden shadow-xl bg-white p-3 border border-gray-200">
+            {/* Main Image */}
+            <div className="rounded-3xl overflow-hidden shadow-xl bg-white p-3 border">
               <img
                 src={
                   selectedImg ||
-                  process.env.NEXT_PUBLIC_IMAGE_PATH +
-                    "/" +
-                    carData.carImageMain
+                  `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${carData.carImageMain}`
                 }
-                className="w-full rounded-2xl object-contain h-[430px]"
+                className="w-full h-[260px] sm:h-[360px] lg:h-[430px] object-contain rounded-2xl"
               />
             </div>
 
-            <div className="mt-5 grid grid-cols-4 gap-4">
+            {/* Thumbnails */}
+            <div className="mt-5 grid grid-cols-4 sm:grid-cols-4 gap-3">
               {[
                 carData.carImageMain,
                 carData.carImageSub1,
@@ -117,57 +103,60 @@ const DetailCars = () => {
                 carData.carImageSub3,
               ]
                 .filter(Boolean)
-                .map((src, i) => (
-                  <button
-                    key={i}
-                    onClick={() =>
-                      setSelectedImg(
-                        process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src
-                      )
-                    }
-                    className={`p-1 rounded-xl bg-white border transition shadow-sm
-                      ${
-                        selectedImg ===
-                        process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src
-                          ? "border-blue-500 shadow"
-                          : "border-gray-200 hover:border-gray-400"
-                      }`}
-                  >
-                    <img
-                      src={process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src}
-                      className="w-full h-[85px] object-cover rounded-lg"
-                    />
-                  </button>
-                ))}
+                .map((src, i) => {
+                  const fullSrc =
+                    process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src;
+
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedImg(fullSrc)}
+                      className={`p-1 rounded-xl bg-white border transition
+                        ${
+                          selectedImg === fullSrc
+                            ? "border-blue-500"
+                            : "border-gray-200 hover:border-gray-400"
+                        }`}
+                    >
+                      <img
+                        src={fullSrc}
+                        className="w-full h-[70px] sm:h-[85px] object-cover rounded-lg"
+                      />
+                    </button>
+                  );
+                })}
             </div>
 
             {/* Rent Card */}
-            <div className="mt-10 bg-white text-gray-800 p-8 rounded-3xl shadow-xl border border-gray-200">
-              {/* Price */}
-              <div className="flex items-end gap-2">
-                <span className="text-xl text-gray-500">
+            <div className="mt-10 bg-white p-6 sm:p-8 rounded-3xl shadow-xl border">
+              <div className="flex items-end gap-2 flex-wrap">
+                <span className="text-lg text-gray-500">
                   {carData.carCurrency}
                 </span>
-                <span className="text-5xl font-bold text-gray-900">
+                <span className="text-4xl sm:text-5xl font-bold">
                   {carData.carRent}
                 </span>
-                <span className="text-xl text-gray-500">{carData.cDay}</span>
+                <span className="text-lg text-gray-500">{carData.cDay}</span>
               </div>
 
-              <hr className="my-6 border-gray-200" />
+              <hr className="my-6" />
 
-              <h2 className="text-2xl font-semibold">Interested in Renting?</h2>
+              <h2 className="text-xl sm:text-2xl font-semibold">
+                Interested in Renting?
+              </h2>
 
-              <div className="flex gap-4 mt-5">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl">
+              <div className="flex flex-col sm:flex-row gap-4 mt-5">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
                   Submit an Enquiry
                 </Button>
 
                 {carData.carStatus === "true" ? (
                   <Button
-                    className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-xl"
+                    className="bg-yellow-400 hover:bg-yellow-500 w-full sm:w-auto"
                     onClick={() =>
-                      router.push(`/models/availability/${carData.id}/rent_now`)
+                      router.push(
+                        `/models/availability/${carData.id}/rent_now`
+                      )
                     }
                   >
                     Book Now
@@ -179,33 +168,33 @@ const DetailCars = () => {
                         `/models/availability/${carData.id}/notify_me`
                       )
                     }
-                    className="bg-gray-300 text-gray-800 hover:bg-gray-400 transition"
+                    className="bg-gray-300 hover:bg-gray-400 w-full sm:w-auto"
                   >
                     Notify Me – Not Available
                   </Button>
                 )}
               </div>
 
-              <hr className="my-6 border-gray-200" />
+              <hr className="my-6" />
 
-              {/* Contact */}
-              <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
+              <h2 className="text-lg sm:text-xl font-semibold mb-4">
+                Contact Us
+              </h2>
 
-              <div className="space-y-3 text-gray-700">
+              <div className="space-y-3">
                 <ContactItem text="rehman@gearshift.com" />
                 <ContactItem text="+91 12345 12345" />
               </div>
             </div>
           </div>
 
-          {/* RIGHT — Car Details */}
+          {/* RIGHT */}
           <div>
-            <h1 className="text-gray-900 text-5xl font-bold leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
               {carData.cName}
             </h1>
 
-            {/* Quick Tags */}
-            <div className="flex flex-wrap gap-3 mt-8">
+            <div className="flex flex-wrap gap-3 mt-6 sm:mt-8">
               <InfoTag icon="⚡" label={carData.carMileage} />
               <InfoTag icon="⚙️" label={carData.carGearSystem} />
               <InfoTag icon="🧍" label={carData.carSeatingCapacity} />
@@ -214,14 +203,12 @@ const DetailCars = () => {
               <InfoTag icon="🚘" label={carData.carBrandName} />
             </div>
 
-            {/* Description */}
-            <p className="mt-8 text-gray-600 leading-relaxed text-lg">
+            <p className="mt-6 sm:mt-8 text-gray-600 text-base sm:text-lg leading-relaxed">
               {carData.cText}
             </p>
 
-            {/* Specifications */}
             <SectionHeader title="Specifications" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Spec label="Fuel Type" value={carData.carFuelType} />
               <Spec label="Mileage" value={carData.carMileage} />
               <Spec label="Gear System" value={carData.carGearSystem} />
@@ -235,9 +222,8 @@ const DetailCars = () => {
               <Spec label="Brand" value={carData.carBrandName} />
             </div>
 
-            {/* Features */}
             <SectionHeader title="Features" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FeatureItem text="Bluetooth" />
               <FeatureItem text="Cruise Control" />
               <FeatureItem text="Built-in GPS" />
@@ -252,41 +238,38 @@ const DetailCars = () => {
   );
 };
 
-/* -------------------------------------------------- */
-/* SUB COMPONENTS — Light Theme */
-/* -------------------------------------------------- */
+/* SUB COMPONENTS */
 
 const SectionHeader = ({ title }) => (
-  <h2 className="text-3xl font-semibold text-gray-900 mt-10 mb-3">{title}</h2>
+  <h2 className="text-2xl sm:text-3xl font-semibold mt-10 mb-3">{title}</h2>
 );
 
 const InfoTag = ({ icon, label }) => (
-  <div className="px-3 py-2 bg-gray-100 rounded-xl flex items-center gap-2 text-gray-700 text-sm border border-gray-300 shadow-sm">
+  <div className="px-3 py-2 bg-gray-100 rounded-xl flex items-center gap-2 text-sm border shadow-sm">
     <span>{icon}</span>
     <span>{label}</span>
   </div>
 );
 
 const Spec = ({ label, value }) => (
-  <div className="bg-white px-4 py-2 rounded-xl flex justify-between text-gray-800 shadow border border-gray-200">
+  <div className="bg-white px-4 py-2 rounded-xl flex justify-between shadow border">
     <span className="text-gray-500">{label}</span>
-    <span className="font-medium text-gray-900">{value}</span>
+    <span className="font-medium">{value}</span>
   </div>
 );
 
 const FeatureItem = ({ text }) => (
-  <div className="flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-xl text-gray-800 hover:bg-gray-200 transition border border-gray-300">
-    <span className="text-green-600 text-lg">✔</span>
+  <div className="flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-xl border hover:bg-gray-200 transition">
+    <span className="text-green-600">✔</span>
     <span>{text}</span>
   </div>
 );
 
 const ContactItem = ({ text }) => (
-  <div className="flex items-center gap-3 text-gray-700">
+  <div className="flex items-center gap-3">
     <span>📩</span>
     <span>{text}</span>
   </div>
 );
-
 
 export default DetailCars;
