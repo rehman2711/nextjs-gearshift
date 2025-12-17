@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SideNav from "./Sidenav";
 import { AlignJustify, X } from "lucide-react";
 import { Button } from "@/components/retroui/Button";
@@ -8,21 +8,12 @@ import { Button } from "@/components/retroui/Button";
 export default function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
-  /* ---------------- LOCK BODY SCROLL ---------------- */
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isOpen]);
-
   return (
-    <>
-      {/* TOGGLE BUTTON */}
+    <div>
       <Button
         size="sm"
         variant="outline"
-        className="p-2 z-50 relative"
+        className={`p-2 ${isOpen && "bg-red-500"}`}
         onClick={() => setIsOpen((prev) => !prev)}
       >
         {isOpen ? (
@@ -32,26 +23,18 @@ export default function HamburgerMenu() {
         )}
       </Button>
 
-      {/* OVERLAY (CLICK ANYWHERE TO CLOSE) */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40"
+          className="absolute top-0 left-0 right-0 w-full h-screen bg-black opacity-50"
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      {/* SIDEBAR */}
-      <div
-        className={`fixed top-0 left-0 z-50 h-screen w-[280px] bg-white
-          transform transition-transform duration-300
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
-        onClick={() => setIsOpen(false)} // ⬅ click anywhere inside sidebar closes
-      >
-        {/* Prevent accidental bubbling if needed */}
-        <div onClick={(e) => e.stopPropagation()}>
+      {isOpen && (
+        <div className="absolute top-0 bottom-0 h-screen left-0 z-10">
           <SideNav setIsOpen={setIsOpen} />
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 }
