@@ -8,7 +8,7 @@ import { Button } from "@/components/retroui/Button";
 export default function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Lock body scroll when menu is open
+  /* ---------------- LOCK BODY SCROLL ---------------- */
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
     return () => {
@@ -17,17 +17,22 @@ export default function HamburgerMenu() {
   }, [isOpen]);
 
   return (
-    <div className="relative">
+    <>
+      {/* TOGGLE BUTTON */}
       <Button
         size="sm"
         variant="outline"
-        className="p-2"
+        className="p-2 z-50 relative"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        {isOpen ? <X className="h-4 w-4" /> : <AlignJustify className="h-4 w-4" />}
+        {isOpen ? (
+          <X className="h-4 w-4" />
+        ) : (
+          <AlignJustify className="h-4 w-4" />
+        )}
       </Button>
 
-      {/* Overlay */}
+      {/* OVERLAY (CLICK ANYWHERE TO CLOSE) */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40"
@@ -35,13 +40,18 @@ export default function HamburgerMenu() {
         />
       )}
 
-      {/* Sidebar */}
+      {/* SIDEBAR */}
       <div
-        className={`fixed top-0 left-0 z-50 h-screen transition-transform duration-300
+        className={`fixed top-0 left-0 z-50 h-screen w-[280px] bg-white
+          transform transition-transform duration-300
           ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+        onClick={() => setIsOpen(false)} // ⬅ click anywhere inside sidebar closes
       >
-        <SideNav setIsOpen={setIsOpen} />
+        {/* Prevent accidental bubbling if needed */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <SideNav setIsOpen={setIsOpen} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
