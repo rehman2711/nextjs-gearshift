@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar/navbar";
 import { Toaster } from "react-hot-toast";
+import ScrollToTop from "@/app/scroll-to-top"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
         }}
       >
         <Toaster />
+        <ScrollToTop />
 
         <Navbar />
         {children}
